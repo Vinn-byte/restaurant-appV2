@@ -4,11 +4,23 @@ const cartItemsElement = document.getElementById('cartItems');
 const cartTotalElement = document.getElementById('cartTotal');
 const placeOrderButton = document.getElementById('placeOrderButton');
 const cartMessage = document.getElementById('cartMessage');
+const orderNotesInput = document.getElementById('orderNotes');
+const brandTitle = document.querySelector('.brand h1');
+const brandSubtitle = document.querySelector('.brand p');
 
 let selectedTable = null;
 let cart = [];
+let menuItems = [];
+let appConfig = {};
+let orders = [];
 
-const menuItems = [
+const ordersKey = 'maankuliOrders';
+
+const configKey = 'maankuliConfig';
+const defaultConfig = {
+  restaurantName: 'Maankuli Restaurant',
+  restaurantTagline: 'Table ordering experience',
+  menuItems: [
   {
     id: 'moonlight-curry',
     name: 'Moonlight Curry',
@@ -45,6 +57,52 @@ const menuItems = [
     image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
   },
 ];
+
+function loadAppConfig() {
+  const saved = localStorage.getItem(configKey);
+  if (saved) {
+    try {
+      appConfig = JSON.parse(saved);
+    } catch (error) {
+      appConfig = defaultConfig;
+    }
+  } else {
+    appConfig = defaultConfig;
+  }
+
+  menuItems = (appConfig.menuItems && appConfig.menuItems.length) ? appConfig.menuItems : defaultConfig.menuItems;
+
+  if (brandTitle) {
+    brandTitle.textContent = appConfig.restaurantName;
+  }
+
+  if (brandSubtitle) {
+    brandSubtitle.textContent = appConfig.restaurantTagline;
+  }
+
+  document.title = `${appConfig.restaurantName} | Table Ordering`;
+}
+
+function loadOrders() {
+  const saved = localStorage.getItem(ordersKey);
+  if (saved) {
+    try {
+      orders = JSON.parse(saved);
+    } catch (error) {
+      orders = [];
+    }
+  } else {
+    orders = [];
+  }
+}
+
+function saveOrders() {
+  localStorage.setItem(ordersKey, JSON.stringify(orders));
+}
+
+function generateOrderId() {
+  return `ORD-${Date.now()}`;
+}
 
 function getQueryParam(key) {
   const params = new URLSearchParams(window.location.search);
@@ -125,7 +183,7 @@ function setWelcomeMessage() {
   if (!selectedTable) {
     selectedTableDisplay.innerHTML = `
       <p class="eyebrow">Awaiting table scan</p>
-      <h3>Welcome, dear customer.</h3>
+      <h3>Welcome to ${appConfig.restaurantName}.</h3>
       <p>Scan your table QR code from the homepage to begin ordering, or return to the scanner if the table is not yet confirmed.</p>
     `;
     return;
@@ -133,7 +191,7 @@ function setWelcomeMessage() {
 
   selectedTableDisplay.innerHTML = `
     <p class="eyebrow">Table ${selectedTable} confirmed</p>
-    <h3>Welcome, dear customer.</h3>
+    <h3>Welcome to ${appConfig.restaurantName}.</h3>
     <p>You have scanned table ${selectedTable}. Please pick your orders below and they will be served immediately.</p>
   `;
 }
@@ -188,15 +246,42 @@ function placeOrder() {
     return sum + menuItem.price * item.quantity;
   }, 0);
 
+  const notes = orderNotesInput ? orderNotesInput.value.trim() : '';
+  const newOrder = {
+    id: generateOrderId(),
+    table: selectedTable,
+    items: cart.map((item) => {
+      const menuItem = menuItems.find((menu) => menu.id === item.id);
+      return {
+        id: item.id,
+        name: menuItem.name,
+        quantity: item.quantity,
+        price: menuItem.price,
+      };
+    }),
+    total,
+    notes,
+    status: 'New',
+    createdAt: new Date().toISOString(),
+  };
+
+  loadOrders();
+  orders.push(newOrder);
+  saveOrders();
+
   if (cartMessage) {
-    cartMessage.textContent = `Order confirmed for table ${selectedTable}. Total $${total.toFixed(2)}. Your dishes will arrive shortly.`;
+    cartMessage.textContent = `Order ${newOrder.id} confirmed for table ${selectedTable}. Total $${total.toFixed(2)}.`;
   }
 
   cart = [];
+  if (orderNotesInput) {
+    orderNotesInput.value = '';
+  }
   renderCart();
 }
 
 function initOrderPage() {
+  loadAppConfig();
   const tableParam = getQueryParam('table');
   selectedTable = tableParam ? Number(tableParam) : null;
   setWelcomeMessage();

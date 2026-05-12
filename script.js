@@ -10,6 +10,7 @@ const tableGrid = document.getElementById('tableGrid');
 const tableStatus = document.getElementById('tableStatus');
 const releaseAllTablesButton = document.getElementById('releaseAllTables');
 const selectedTableDisplay = document.getElementById('selectedTableDisplay');
+const menuGrid = document.getElementById('menuGrid');
 const catalogGrid = document.getElementById('catalogGrid');
 const cartItemsElement = document.getElementById('cartItems');
 const cartTotalElement = document.getElementById('cartTotal');
@@ -28,44 +29,55 @@ let animationFrameId = null;
 let selectedTable = null;
 let cart = [];
 let tableState = {};
+let menuItems = [];
+let appConfig = {};
 
-const menuItems = [
-  {
-    id: 'moonlight-curry',
-    name: 'Moonlight Curry',
-    description: 'Rich spiced chicken curry, fragrant jasmine rice, and fresh cilantro.',
-    price: 16.5,
-    image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'mystic-salad',
-    name: 'Mystic Salad',
-    description: 'Seasonal greens, roasted nuts, berries, and citrus dressing.',
-    price: 12.0,
-    image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'sunset-burger',
-    name: 'Sunset Burger',
-    description: 'Grilled beef, caramelized onions, aged cheddar, and house aioli.',
-    price: 15.9,
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'celestial-pasta',
-    name: 'Celestial Pasta',
-    description: 'Handmade pasta with garlic, cherry tomatoes, olives, and parmesan.',
-    price: 14.0,
-    image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    id: 'coastal-seafood',
-    name: 'Coastal Seafood',
-    description: 'Shellfish medley with lemon butter, herbs, and toasted garlic bread.',
-    price: 18.75,
-    image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
-  },
-];
+const configKey = 'maankuliConfig';
+const defaultConfig = {
+  restaurantName: 'Maankuli Restaurant',
+  restaurantTagline: 'Modern dining with a classic soul',
+  heroTagline: 'Fine dining, simplified',
+  heroHeadline: 'Maankuli Restaurant delivers an elegant QR dining experience.',
+  heroText: 'Discover carefully crafted dishes, reserve a table, and place orders directly from your phone. Enjoy refined flavors without the wait.',
+  heroImage: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80',
+  menuItems: [
+    {
+      id: 'moonlight-curry',
+      name: 'Moonlight Curry',
+      description: 'Rich spiced chicken curry, fragrant jasmine rice, and fresh cilantro.',
+      price: 16.5,
+      image: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      id: 'mystic-salad',
+      name: 'Mystic Salad',
+      description: 'Seasonal greens, roasted nuts, berries, and citrus dressing.',
+      price: 12.0,
+      image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      id: 'sunset-burger',
+      name: 'Sunset Burger',
+      description: 'Grilled beef, caramelized onions, aged cheddar, and house aioli.',
+      price: 15.9,
+      image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      id: 'celestial-pasta',
+      name: 'Celestial Pasta',
+      description: 'Handmade pasta with garlic, cherry tomatoes, olives, and parmesan.',
+      price: 14.0,
+      image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80',
+    },
+    {
+      id: 'coastal-seafood',
+      name: 'Coastal Seafood',
+      description: 'Shellfish medley with lemon butter, herbs, and toasted garlic bread.',
+      price: 18.75,
+      image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
+    },
+  ],
+};
 
 function getTableQrUrl(tableId) {
   return `${window.location.origin}${window.location.pathname}?table=${tableId}`;
@@ -90,6 +102,84 @@ function loadTableState() {
 
 function saveTableState() {
   localStorage.setItem('maankuliTableState', JSON.stringify(tableState));
+}
+
+function loadAppConfig() {
+  const saved = localStorage.getItem(configKey);
+  if (saved) {
+    try {
+      appConfig = JSON.parse(saved);
+    } catch (error) {
+      appConfig = defaultConfig;
+    }
+  } else {
+    appConfig = defaultConfig;
+  }
+
+  menuItems = (appConfig.menuItems && appConfig.menuItems.length) ? appConfig.menuItems : defaultConfig.menuItems;
+}
+
+function saveAppConfig() {
+  localStorage.setItem(configKey, JSON.stringify(appConfig));
+}
+
+function applySiteContent() {
+  const brandTitle = document.querySelector('.brand h1');
+  const brandSubtitle = document.querySelector('.brand p');
+  const heroTagline = document.getElementById('heroTagline');
+  const heroHeadline = document.getElementById('heroHeadline');
+  const heroText = document.getElementById('heroText');
+  const heroImage = document.getElementById('heroImage');
+  const pageTitle = document.querySelector('title');
+
+  if (brandTitle) {
+    brandTitle.textContent = appConfig.restaurantName;
+  }
+
+  if (brandSubtitle) {
+    brandSubtitle.textContent = appConfig.restaurantTagline;
+  }
+
+  if (heroTagline) {
+    heroTagline.textContent = appConfig.heroTagline;
+  }
+
+  if (heroHeadline) {
+    heroHeadline.textContent = appConfig.heroHeadline;
+  }
+
+  if (heroText) {
+    heroText.textContent = appConfig.heroText;
+  }
+
+  if (heroImage) {
+    heroImage.src = appConfig.heroImage;
+  }
+
+  if (pageTitle) {
+    pageTitle.textContent = `${appConfig.restaurantName} | Modern QR Dining`;
+  }
+}
+
+function renderMenu() {
+  if (!menuGrid) {
+    return;
+  }
+
+  menuGrid.innerHTML = menuItems
+    .map(
+      (item) => `
+        <article class="menu-card">
+          <img src="${item.image}" alt="${item.name}" />
+          <div>
+            <h3>${item.name}</h3>
+            <p>${item.description}</p>
+          </div>
+          <span class="price">$${item.price.toFixed(2)}</span>
+        </article>
+      `,
+    )
+    .join('');
 }
 
 function renderTables() {
@@ -245,7 +335,7 @@ function removeFromCart(itemId) {
 
 function scanTable(tableId) {
   if (tableState[tableId]) {
-    tableStatus.textContent = `Table ${tableId} is already taken.`;
+    tableStatus.textContent = `Table ${tableId} is already reserved. Please wait for release before scanning again.`;
     return;
   }
 
@@ -332,6 +422,11 @@ function getTableIdFromScan(result) {
 
 function goToOrderPage(tableId) {
   if (!tableId || Number.isNaN(tableId)) {
+    return;
+  }
+
+  if (tableState[tableId]) {
+    showMessage(`Table ${tableId} is already reserved. Please wait for release before scanning again.`);
     return;
   }
 
@@ -536,7 +631,15 @@ function scrollToSectionOnHash() {
   }
 }
 
+function refreshTableStatus() {
+  loadTableState();
+  renderTables();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  loadAppConfig();
+  applySiteContent();
+  renderMenu();
   loadTableState();
   renderTables();
   renderCatalog();
@@ -557,4 +660,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+});
+
+window.addEventListener('pageshow', () => {
+  refreshTableStatus();
+});
+
+window.addEventListener('focus', () => {
+  refreshTableStatus();
 });

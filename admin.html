@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Editor | Maankuli Restaurant</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo">Ma</span>
+        <div>
+          <h1>Maankuli Admin</h1>
+          <p>Update restaurant details and menu</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#menu">Menu</a>
+        <a href="order.html">Order Page</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="catalog-section admin-page">
+        <div class="section-heading">
+          <p class="eyebrow">Admin Editor</p>
+          <h2>Manage restaurant content and menu items.</h2>
+          <p class="about-copy">Use this panel to adjust the restaurant name, menu images, pricing, and landing page content. Changes save to local storage and will appear on the main site instantly.</p>
+        </div>
+
+        <div id="adminLoginView" class="admin-card">
+          <form id="adminLoginForm" class="admin-form">
+            <label>
+              Admin password
+              <input type="password" id="adminPassword" placeholder="Enter password" required />
+            </label>
+            <button type="submit" class="button primary">Unlock Admin</button>
+            <p id="loginMessage" class="scanner-status"></p>
+          </form>
+        </div>
+
+        <div id="adminPanel" class="hidden">
+          <div class="admin-panel-heading">
+            <div>
+              <h3>Site details</h3>
+              <p class="about-copy">Edit the restaurant brand, hero content, and menu items.</p>
+            </div>
+            <button id="logoutButton" class="button secondary">Logout</button>
+          </div>
+          <div class="admin-card">
+            <form id="settingsForm" class="admin-form">
+              <label>
+                Restaurant name
+                <input type="text" id="restaurantName" placeholder="Maankuli Restaurant" required />
+              </label>
+              <label>
+                Restaurant tagline
+                <input type="text" id="restaurantTagline" placeholder="Modern dining with a classic soul" />
+              </label>
+              <label>
+                Hero headline
+                <input type="text" id="heroHeadlineInput" placeholder="Maankuli Restaurant delivers an elegant QR dining experience." />
+              </label>
+              <label>
+                Hero text
+                <textarea id="heroTextInput" placeholder="Discover carefully crafted dishes..."></textarea>
+              </label>
+              <label>
+                Hero image URL
+                <input type="text" id="heroImageInput" placeholder="https://..." />
+              </label>
+            </form>
+          </div>
+
+          <div id="menuEditor" class="admin-card">
+            <div class="menu-editor-header">
+              <h3>Menu items</h3>
+              <button id="addDishButton" class="button secondary">Add Dish</button>
+            </div>
+            <div id="menuList" class="admin-grid"></div>
+          </div>
+
+          <div id="ordersSection" class="admin-card">
+            <div class="menu-editor-header">
+              <h3>Order management</h3>
+              <button id="clearOrdersButton" class="button secondary">Clear All Orders</button>
+            </div>
+            <div id="ordersList" class="admin-grid"></div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-grid">
+              <button id="saveConfigButton" class="button primary">Save Changes</button>
+              <button id="resetConfigButton" class="button secondary">Reset to Defaults</button>
+            </div>
+            <p id="statusMessage" class="scanner-status"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

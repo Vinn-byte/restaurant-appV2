@@ -23,15 +23,16 @@
         <a href="#menu">Menu</a>
         <a href="#order">Order</a>
         <a href="#scanner">Scanner</a>
+        <a href="admin.html">Admin</a>
       </nav>
     </header>
 
     <main>
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Fine dining, simplified</p>
-          <h2>Maankuli Restaurant delivers an elegant QR dining experience.</h2>
-          <p>
+          <p class="eyebrow" id="heroTagline">Fine dining, simplified</p>
+          <h2 id="heroHeadline">Maankuli Restaurant delivers an elegant QR dining experience.</h2>
+          <p id="heroText">
             Discover carefully crafted dishes, reserve a table, and place orders directly from your phone.
             Enjoy refined flavors without the wait.
           </p>
@@ -56,7 +57,7 @@
           </div>
         </div>
         <div class="hero-image-card">
-          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80" alt="Maankuli restaurant table setting" />
+          <img id="heroImage" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80" alt="Maankuli restaurant table setting" />
           <div class="hero-image-label">
             <p>Signature dining room</p>
             <h3>Elegant atmosphere</h3>
@@ -94,32 +95,7 @@
           <p class="eyebrow">Signature dishes</p>
           <h2>Explore favorites from our seasonal menu.</h2>
         </div>
-        <div class="menu-grid">
-          <article class="menu-card">
-            <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=800&q=80" alt="Grilled steak" />
-            <div>
-              <h3>Moonlight Curry</h3>
-              <p>Rich spiced chicken curry, fragrant jasmine rice, and fresh cilantro.</p>
-            </div>
-            <span class="price">$16.50</span>
-          </article>
-          <article class="menu-card">
-            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80" alt="Fresh salad" />
-            <div>
-              <h3>Mystic Salad</h3>
-              <p>Seasonal greens, roasted nuts, berries, and citrus dressing.</p>
-            </div>
-            <span class="price">$12.00</span>
-          </article>
-          <article class="menu-card">
-            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Gourmet burger" />
-            <div>
-              <h3>Sunset Burger</h3>
-              <p>Grilled beef, caramelized onions, aged cheddar, and house aioli.</p>
-            </div>
-            <span class="price">$15.90</span>
-          </article>
-        </div>
+        <div id="menuGrid" class="menu-grid"></div>
       </section>
 
       <button id="toggleQrCodes" class="button secondary">Hide Table QR Codes</button>

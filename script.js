@@ -257,7 +257,11 @@ function scanTable(tableId) {
   renderCart();
   revealSection(catalogSection);
   if (selectedTableDisplay) {
-    selectedTableDisplay.textContent = `Table ${selectedTable} reserved — add dishes to your order.`;
+    selectedTableDisplay.innerHTML = `
+      <p class="eyebrow">Table ${selectedTable} confirmed</p>
+      <h3>Welcome, dear customer.</h3>
+      <p>You've scanned table ${selectedTable}. Please choose your dishes from the menu below and they will be served to your table immediately.</p>
+    `;
   }
   tableStatus.textContent = `Table ${tableId} reserved. Browse the catalogue below.`;
 }

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Maankuli Restaurant | QR Menu & Ordering</title>
+    <title>Maankuli Restaurant | Modern QR Dining</title>
     <link rel="stylesheet" href="styles.css" />
     <script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
@@ -12,13 +12,14 @@
   <body>
     <header class="site-header">
       <div class="brand">
-        <span class="logo">🌙</span>
+        <span class="logo">Ma</span>
         <div>
           <h1>Maankuli Restaurant</h1>
-          <p>Scan. Order. Enjoy.</p>
+          <p>Modern dining with a classic soul</p>
         </div>
       </div>
       <nav class="nav-links">
+        <a href="#about" id="aboutLink">About</a>
         <a href="#menu">Menu</a>
         <a href="#order">Order</a>
         <a href="#scanner">Scanner</a>
@@ -28,134 +29,216 @@
     <main>
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Welcome to Maankuli</p>
-          <h2>Fresh flavors with a modern QR menu experience.</h2>
+          <p class="eyebrow">Fine dining, simplified</p>
+          <h2>Maankuli Restaurant delivers an elegant QR dining experience.</h2>
           <p>
-            Skip the printed menu. Scan the table QR code, browse our curated dishes,
-            and place your order directly from your phone.
+            Discover carefully crafted dishes, reserve a table, and place orders directly from your phone.
+            Enjoy refined flavors without the wait.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#scanner">Scan the QR Menu</a>
-            <a class="button secondary" href="#order">Order Now</a>
+            <a class="button primary" href="#scanner">Scan the QR</a>
+            <a class="button secondary" href="#menu">View Menu</a>
+            <a class="button secondary" href="#tables">Table QR Codes</a>
+          </div>
+          <div class="hero-stats">
+            <div>
+              <strong>120+</strong>
+              <span>Seasonal dishes</span>
+            </div>
+            <div>
+              <strong>4.9/5</strong>
+              <span>Guest rating</span>
+            </div>
+            <div>
+              <strong>Fast</strong>
+              <span>Mobile ordering</span>
+            </div>
           </div>
         </div>
-        <div class="hero-visual">
-          <div class="qr-preview-card">
-            <h3>Table QR Code</h3>
-            <div id="qrCode" class="qr-code"></div>
-            <p>Scan this code to open the digital menu instantly.</p>
+        <div class="hero-image-card">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80" alt="Maankuli restaurant table setting" />
+          <div class="hero-image-label">
+            <p>Signature dining room</p>
+            <h3>Elegant atmosphere</h3>
           </div>
         </div>
       </section>
 
+      <section id="about" class="about-section hidden">
+        <div class="section-heading">
+          <p class="eyebrow">About Maankuli</p>
+          <h2>A modern restaurant experience with warm hospitality.</h2>
+        </div>
+        <p class="about-copy">
+          At Maankuli, every meal is designed to delight. We blend fresh, locally-sourced ingredients with bold flavors and attentive service, all while offering a seamless QR-based ordering experience for your convenience.
+        </p>
+      </section>
+
       <section class="features">
         <article>
-          <h3>Digital Menu</h3>
-          <p>Customers use their phone to view the full menu without handling paper menus.</p>
+          <h3>Modern QR ordering</h3>
+          <p>Guests scan a code, browse the menu, and order without waiting for a server.</p>
         </article>
         <article>
-          <h3>Fast Ordering</h3>
-          <p>
-            Select dishes, leave special instructions, and submit your order in one flow.
-          </p>
+          <h3>Curated favorites</h3>
+          <p>Discover chef-selected dishes that highlight seasonal produce and signature spices.</p>
         </article>
         <article>
-          <h3>Staff Friendly</h3>
-          <p>
-            Restaurant staff receive confirmed orders in a clean digital format.
-          </p>
+          <h3>Designed for hospitality</h3>
+          <p>Every detail is crafted to feel premium, effortless, and memorable.</p>
         </article>
       </section>
 
       <section id="menu" class="menu-section">
         <div class="section-heading">
-          <p class="eyebrow">Our Menu</p>
-          <h2>Delicious choices for every appetite</h2>
+          <p class="eyebrow">Signature dishes</p>
+          <h2>Explore favorites from our seasonal menu.</h2>
         </div>
         <div class="menu-grid">
-          <div class="menu-card">
-            <h3>Moonlight Curry</h3>
-            <p>Spiced chicken curry with fresh herbs, served with steamed rice.</p>
-            <span class="price">$14.99</span>
-          </div>
-          <div class="menu-card">
-            <h3>Mystic Salad</h3>
-            <p>Seasonal greens, roasted nuts, berries, and a citrus vinaigrette.</p>
-            <span class="price">$10.99</span>
-          </div>
-          <div class="menu-card">
-            <h3>Sunset Burger</h3>
-            <p>Grilled beef with caramelized onions, cheese, and house sauce.</p>
-            <span class="price">$13.50</span>
-          </div>
-          <div class="menu-card">
-            <h3>Celestial Pasta</h3>
-            <p>Handmade pasta with garlic, cherry tomatoes, olives, and parmesan.</p>
-            <span class="price">$12.50</span>
-          </div>
+          <article class="menu-card">
+            <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=800&q=80" alt="Grilled steak" />
+            <div>
+              <h3>Moonlight Curry</h3>
+              <p>Rich spiced chicken curry, fragrant jasmine rice, and fresh cilantro.</p>
+            </div>
+            <span class="price">$16.50</span>
+          </article>
+          <article class="menu-card">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80" alt="Fresh salad" />
+            <div>
+              <h3>Mystic Salad</h3>
+              <p>Seasonal greens, roasted nuts, berries, and citrus dressing.</p>
+            </div>
+            <span class="price">$12.00</span>
+          </article>
+          <article class="menu-card">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Gourmet burger" />
+            <div>
+              <h3>Sunset Burger</h3>
+              <p>Grilled beef, caramelized onions, aged cheddar, and house aioli.</p>
+            </div>
+            <span class="price">$15.90</span>
+          </article>
         </div>
       </section>
 
-      <section id="order" class="order-section">
+      <button id="toggleQrCodes" class="button secondary">Hide Table QR Codes</button>
+
+      <section id="tables" class="tables-section">
+        <div class="section-heading">
+          <p class="eyebrow">Table QR Codes</p>
+          <h2>Reserve a table by scanning one of our table QR codes.</h2>
+        </div>
+        <p class="about-copy">
+          Tap a table QR card to scan and reserve it. Once reserved, the table will be marked as taken until released.
+        </p>
+        <div class="tables-actions">
+          <button id="releaseAllTables" class="button secondary">Release All Tables</button>
+        </div>
+        <div id="tableGrid" class="tables-grid"></div>
+        <div id="tableStatus" class="scanner-status">Select a table to reserve and view the menu.</div>
+      </section>
+
+      <section id="catalog" class="catalog-section hidden">
+        <div class="section-heading">
+          <p class="eyebrow">Menu Catalogue</p>
+          <h2>Pick your favorite dishes and add them to your order.</h2>
+        </div>
+        <p class="about-copy" id="selectedTableDisplay">Table not selected yet.</p>
+        <div class="catalog-layout">
+          <div id="catalogGrid" class="catalog-grid"></div>
+          <aside class="cart-panel">
+            <div class="cart-header">
+              <h3>Your Order</h3>
+              <p>Selected items will accumulate here.</p>
+            </div>
+            <div id="cartItems" class="cart-items"></div>
+            <div class="cart-total">
+              <span>Total</span>
+              <strong id="cartTotal">$0.00</strong>
+            </div>
+            <button id="placeOrderButton" class="button primary">Place Order</button>
+            <div id="cartMessage" class="scanner-status"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="gallery-section">
+        <div class="gallery-grid">
+          <article class="gallery-card gallery-1">
+            <div class="gallery-copy">
+              <p class="eyebrow">Atmosphere</p>
+              <h3>Warm dining room</h3>
+            </div>
+          </article>
+          <article class="gallery-card gallery-2">
+            <div class="gallery-copy">
+              <p class="eyebrow">Chef's craft</p>
+              <h3>Handcrafted plates</h3>
+            </div>
+          </article>
+          <article class="gallery-card gallery-3">
+            <div class="gallery-copy">
+              <p class="eyebrow">Fresh flavors</p>
+              <h3>Seasonal ingredients</h3>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="order" class="order-section hidden">
         <div class="section-heading">
           <p class="eyebrow">Place an Order</p>
-          <h2>Order directly from your phone</h2>
+          <h2>Submit your request from your seat.</h2>
         </div>
         <form id="orderForm" class="order-form">
           <label>
             Your name
             <input type="text" id="customerName" placeholder="Jane Doe" required />
           </label>
-
           <label>
             Table number
             <input type="text" id="tableNumber" placeholder="12" required />
           </label>
-
           <label>
             Dish name
             <input type="text" id="dishName" placeholder="Sunset Burger" required />
           </label>
-
           <label>
             Notes or allergies
             <textarea id="orderNotes" placeholder="No onions, please."></textarea>
           </label>
-
           <button type="submit" class="button primary">Submit Order</button>
         </form>
         <div id="orderConfirmation" class="order-confirmation hidden">
           <h3>Order submitted!</h3>
-          <p>We received your order. A server will confirm it soon.</p>
+          <p>We received your order. A server will confirm it shortly.</p>
         </div>
       </section>
 
-      <section id="scanner" class="scanner-section">
+      <section id="scanner" class="scanner-section hidden">
         <div class="section-heading">
           <p class="eyebrow">QR Scanner</p>
-          <h2>Use your camera to scan our QR code</h2>
+          <h2>Scan the table code with ease.</h2>
         </div>
         <p>
-          Open the scanner and point your camera at the QR code on the table. If you scan the live preview,
-          it will open the menu automatically.
+          Use your camera to scan the QR code and open Maankuli's digital menu instantly. If the camera is unavailable, the page will still let you order manually.
         </p>
         <div class="scanner-actions">
           <button id="openScannerButton" class="button primary">Open Scanner</button>
           <button id="stopScannerButton" class="button secondary hidden">Stop Scanner</button>
         </div>
-        <div id="scannerStatus" class="scanner-status">
-          Ready to scan.
-        </div>
+        <div id="scannerStatus" class="scanner-status">Ready to scan.</div>
         <div id="scannerFallback" class="scanner-fallback hidden">
           <p>
-            Camera access often requires a secure connection (HTTPS) or a browser that supports
-            getUserMedia. If your phone blocks the camera on this page, you can still use the QR
-            preview or submit a manual order through the form.
+            Camera access often requires HTTPS or localhost in mobile browsers. Use a secure tunnel like
+            <code>ngrok</code> or <code>localtunnel</code> if the camera does not activate.
           </p>
-          <p>
-            On your phone, try Chrome or Safari and use a secure tunnel like <code>ngrok</code> or
-            <code>localtunnel</code> if needed.
-          </p>
+        </div>
+        <div class="qr-preview-card scanner-qr-card">
+          <h3>Your Table QR Card</h3>
+          <div id="qrCode" class="qr-code"></div>
+          <p>Scan this QR code with your phone camera to open the menu directly.</p>
         </div>
         <div class="scanner-view">
           <video id="video" autoplay playsinline class="scanner-video hidden"></video>
@@ -165,7 +248,10 @@
     </main>
 
     <footer class="site-footer">
-      <p>© 2026 Maankuli Restaurant. Crafted for an easy QR-backed dining experience.</p>
+      <div>
+        <p>© 2026 Maankuli Restaurant</p>
+        <p>Elegant QR dining built for modern guests.</p>
+      </div>
     </footer>
   </body>
 </html>

@@ -312,6 +312,35 @@ function placeOrder() {
   renderCart();
 }
 
+function getTableIdFromScan(result) {
+  if (!result || typeof result !== 'string') {
+    return null;
+  }
+
+  const tableMatch = result.match(/[?&]table=(\d+)/);
+  if (tableMatch && tableMatch[1]) {
+    return Number(tableMatch[1]);
+  }
+
+  const numericMatch = result.match(/^(\d+)$/);
+  if (numericMatch && numericMatch[1]) {
+    return Number(numericMatch[1]);
+  }
+
+  return null;
+}
+
+function goToOrderPage(tableId) {
+  if (!tableId || Number.isNaN(tableId)) {
+    return;
+  }
+
+  selectedTable = tableId;
+  tableState[tableId] = true;
+  saveTableState();
+  window.location.href = `order.html?table=${tableId}`;
+}
+
 function handleScanResult(result) {
   console.log('Scanned result:', result);
   if (!result) {
@@ -322,14 +351,10 @@ function handleScanResult(result) {
   showMessage(`QR code scanned: ${result}`);
   stopScanner();
 
-  if (result.includes('?table=')) {
-    const url = new URL(result, window.location.origin);
-    const tableParam = url.searchParams.get('table');
-    const tableId = Number(tableParam);
-    if (tableId >= 1 && tableId <= 10) {
-      scanTable(tableId);
-      return;
-    }
+  const tableId = getTableIdFromScan(result);
+  if (tableId >= 1 && tableId <= 10) {
+    goToOrderPage(tableId);
+    return;
   }
 
   if (result.includes('?menu=true')) {

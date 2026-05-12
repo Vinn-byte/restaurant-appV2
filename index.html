@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maankuli Restaurant | QR Menu & Ordering</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo">🌙</span>
+        <div>
+          <h1>Maankuli Restaurant</h1>
+          <p>Scan. Order. Enjoy.</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#menu">Menu</a>
+        <a href="#order">Order</a>
+        <a href="#scanner">Scanner</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Welcome to Maankuli</p>
+          <h2>Fresh flavors with a modern QR menu experience.</h2>
+          <p>
+            Skip the printed menu. Scan the table QR code, browse our curated dishes,
+            and place your order directly from your phone.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#scanner">Scan the QR Menu</a>
+            <a class="button secondary" href="#order">Order Now</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="qr-preview-card">
+            <h3>Table QR Code</h3>
+            <div id="qrCode" class="qr-code"></div>
+            <p>Scan this code to open the digital menu instantly.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="features">
+        <article>
+          <h3>Digital Menu</h3>
+          <p>Customers use their phone to view the full menu without handling paper menus.</p>
+        </article>
+        <article>
+          <h3>Fast Ordering</h3>
+          <p>
+            Select dishes, leave special instructions, and submit your order in one flow.
+          </p>
+        </article>
+        <article>
+          <h3>Staff Friendly</h3>
+          <p>
+            Restaurant staff receive confirmed orders in a clean digital format.
+          </p>
+        </article>
+      </section>
+
+      <section id="menu" class="menu-section">
+        <div class="section-heading">
+          <p class="eyebrow">Our Menu</p>
+          <h2>Delicious choices for every appetite</h2>
+        </div>
+        <div class="menu-grid">
+          <div class="menu-card">
+            <h3>Moonlight Curry</h3>
+            <p>Spiced chicken curry with fresh herbs, served with steamed rice.</p>
+            <span class="price">$14.99</span>
+          </div>
+          <div class="menu-card">
+            <h3>Mystic Salad</h3>
+            <p>Seasonal greens, roasted nuts, berries, and a citrus vinaigrette.</p>
+            <span class="price">$10.99</span>
+          </div>
+          <div class="menu-card">
+            <h3>Sunset Burger</h3>
+            <p>Grilled beef with caramelized onions, cheese, and house sauce.</p>
+            <span class="price">$13.50</span>
+          </div>
+          <div class="menu-card">
+            <h3>Celestial Pasta</h3>
+            <p>Handmade pasta with garlic, cherry tomatoes, olives, and parmesan.</p>
+            <span class="price">$12.50</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="order" class="order-section">
+        <div class="section-heading">
+          <p class="eyebrow">Place an Order</p>
+          <h2>Order directly from your phone</h2>
+        </div>
+        <form id="orderForm" class="order-form">
+          <label>
+            Your name
+            <input type="text" id="customerName" placeholder="Jane Doe" required />
+          </label>
+
+          <label>
+            Table number
+            <input type="text" id="tableNumber" placeholder="12" required />
+          </label>
+
+          <label>
+            Dish name
+            <input type="text" id="dishName" placeholder="Sunset Burger" required />
+          </label>
+
+          <label>
+            Notes or allergies
+            <textarea id="orderNotes" placeholder="No onions, please."></textarea>
+          </label>
+
+          <button type="submit" class="button primary">Submit Order</button>
+        </form>
+        <div id="orderConfirmation" class="order-confirmation hidden">
+          <h3>Order submitted!</h3>
+          <p>We received your order. A server will confirm it soon.</p>
+        </div>
+      </section>
+
+      <section id="scanner" class="scanner-section">
+        <div class="section-heading">
+          <p class="eyebrow">QR Scanner</p>
+          <h2>Use your camera to scan our QR code</h2>
+        </div>
+        <p>
+          Open the scanner and point your camera at the QR code on the table. If you scan the live preview,
+          it will open the menu automatically.
+        </p>
+        <div class="scanner-actions">
+          <button id="openScannerButton" class="button primary">Open Scanner</button>
+          <button id="stopScannerButton" class="button secondary hidden">Stop Scanner</button>
+        </div>
+        <div id="scannerStatus" class="scanner-status">
+          Ready to scan.
+        </div>
+        <div id="scannerFallback" class="scanner-fallback hidden">
+          <p>
+            Camera access often requires a secure connection (HTTPS) or a browser that supports
+            getUserMedia. If your phone blocks the camera on this page, you can still use the QR
+            preview or submit a manual order through the form.
+          </p>
+          <p>
+            On your phone, try Chrome or Safari and use a secure tunnel like <code>ngrok</code> or
+            <code>localtunnel</code> if needed.
+          </p>
+        </div>
+        <div class="scanner-view">
+          <video id="video" autoplay playsinline class="scanner-video hidden"></video>
+          <canvas id="scanCanvas" class="hidden"></canvas>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Maankuli Restaurant. Crafted for an easy QR-backed dining experience.</p>
+    </footer>
+  </body>
+</html>

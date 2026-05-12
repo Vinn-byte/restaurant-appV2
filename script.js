@@ -804,8 +804,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const tableParam = params.get('table');
   if (tableParam && !Number.isNaN(Number(tableParam))) {
     const tableId = Number(tableParam);
-    // Redirect to order page with the table parameter
-    window.location.href = `order.html?table=${tableId}`;
+    // Save table state and redirect to order page
+    let tableState = {};
+    const savedState = localStorage.getItem('maankuliTableState');
+    if (savedState) {
+      try {
+        tableState = JSON.parse(savedState);
+      } catch (e) {
+        tableState = {};
+      }
+    }
+    tableState[tableId] = true;
+    localStorage.setItem('maankuliTableState', JSON.stringify(tableState));
+    
+    // Redirect to order page with absolute URL
+    const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '').replace(/\/$/, '');
+    window.location.href = `${baseUrl}/order.html?table=${tableId}`;
     return;
   }
 

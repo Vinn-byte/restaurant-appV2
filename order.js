@@ -467,7 +467,31 @@ async function placeOrder() {
 function initOrderPage() {
   loadAppConfig();
   const tableParam = getQueryParam('table');
-  selectedTable = tableParam ? Number(tableParam) : null;
+  console.log('Order page loaded. Table param from URL:', tableParam);
+  
+  // Try to get table from URL parameter first, then localStorage as fallback
+  let table = tableParam ? Number(tableParam) : null;
+  if (!table) {
+    const savedState = localStorage.getItem('maankuliTableState');
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState);
+        for (const [tableId, reserved] of Object.entries(state)) {
+          if (reserved) {
+            table = Number(tableId);
+            console.log('Found reserved table in localStorage:', table);
+            break;
+          }
+        }
+      } catch (e) {
+        console.error('Error reading table state:', e);
+      }
+    }
+  }
+  
+  selectedTable = table;
+  console.log('Selected table set to:', selectedTable);
+  console.log('Window location:', window.location.href);
   setWelcomeMessage();
   renderCatalog();
   renderCart();

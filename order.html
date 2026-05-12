@@ -33,6 +33,11 @@
           <p class="eyebrow">Awaiting table scan</p>
           <h3>Welcome, dear customer.</h3>
           <p>Scan your table QR code from the homepage to begin ordering, or return to the scanner if the table is not yet confirmed.</p>
+          <div id="debugInfo" style="margin-top: 20px; padding: 10px; background: #f0f0f0; border-radius: 4px; font-size: 12px; color: #666;">
+            <strong>Debug Info:</strong><br/>
+            URL: <span id="debugUrl">-</span><br/>
+            Table Param: <span id="debugTable">-</span>
+          </div>
         </div>
 
         <div class="catalog-layout" id="order-panel">
@@ -46,6 +51,10 @@
             <div class="cart-total">
               <span>Total</span>
               <strong id="cartTotal">$0.00</strong>
+            </div>
+            <div class="cart-total">
+              <span>Est. Time</span>
+              <strong id="cartEstimatedTime">-- min</strong>
             </div>
             <label>
               Order notes

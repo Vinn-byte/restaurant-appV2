@@ -2,6 +2,7 @@ const selectedTableDisplay = document.getElementById('selectedTableDisplay');
 const catalogGrid = document.getElementById('catalogGrid');
 const cartItemsElement = document.getElementById('cartItems');
 const cartTotalElement = document.getElementById('cartTotal');
+const cartEstimatedTimeElement = document.getElementById('cartEstimatedTime');
 const placeOrderButton = document.getElementById('placeOrderButton');
 const cartMessage = document.getElementById('cartMessage');
 const orderNotesInput = document.getElementById('orderNotes');
@@ -18,6 +19,12 @@ let statusPollInterval = null;
 
 const ordersKey = 'maankuliOrders';
 
+// Debug: Run immediately
+console.log('order.js script loaded');
+console.log('Current URL:', window.location.href);
+const immediateParams = new URLSearchParams(window.location.search);
+console.log('Immediate table param check:', immediateParams.get('table'));
+
 const configKey = 'maankuliConfig';
 const defaultConfig = {
   restaurantName: 'Maankuli Restaurant',
@@ -28,6 +35,7 @@ const defaultConfig = {
     name: 'Moonlight Curry',
     description: 'Rich spiced chicken curry, fragrant jasmine rice, and fresh cilantro.',
     price: 16.5,
+    estimatedTime: 25,
     image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -35,6 +43,7 @@ const defaultConfig = {
     name: 'Mystic Salad',
     description: 'Seasonal greens, roasted nuts, berries, and citrus dressing.',
     price: 12.0,
+    estimatedTime: 10,
     image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -42,6 +51,7 @@ const defaultConfig = {
     name: 'Sunset Burger',
     description: 'Grilled beef, caramelized onions, aged cheddar, and house aioli.',
     price: 15.9,
+    estimatedTime: 15,
     image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -49,13 +59,15 @@ const defaultConfig = {
     name: 'Celestial Pasta',
     description: 'Handmade pasta with garlic, cherry tomatoes, olives, and parmesan.',
     price: 14.0,
-    image: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 20,
+    image: 'https://images.unsplash.com/photo-1521389508051-d7ffb5dc8e0f?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'coastal-seafood',
     name: 'Coastal Seafood',
     description: 'Shellfish medley with lemon butter, herbs, and toasted garlic bread.',
     price: 18.75,
+    estimatedTime: 22,
     image: 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -63,34 +75,39 @@ const defaultConfig = {
     name: 'Grilled Salmon',
     description: 'Pan-seared salmon fillet with asparagus, lemon butter, and herb seasoning.',
     price: 19.5,
-    image: 'https://images.unsplash.com/photo-1580959375944-abd7e991f971?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 18,
+    image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'vegetable-stir-fry',
     name: 'Vegetable Stir-Fry',
     description: 'Fresh mixed vegetables with garlic ginger sauce, served over jasmine rice.',
     price: 13.5,
-    image: 'https://images.unsplash.com/photo-1609501676725-7186f017a4b5?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 12,
+    image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'ribeye-steak',
     name: 'Ribeye Steak',
     description: 'Premium cut, grilled to perfection with roasted potatoes and seasonal vegetables.',
     price: 24.99,
-    image: 'https://images.unsplash.com/photo-1599141726850-1d375ed63cb7?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 20,
+    image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'shrimp-risotto',
     name: 'Shrimp Risotto',
     description: 'Creamy arborio rice with garlic butter shrimp, white wine, and parmesan.',
     price: 17.5,
-    image: 'https://images.unsplash.com/photo-1589985643294-4bf00d9bef07?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 22,
+    image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'chocolate-cake',
     name: 'Chocolate Cake',
     description: 'Rich dark chocolate cake with ganache frosting and berry compote.',
     price: 7.5,
+    estimatedTime: 3,
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -98,20 +115,23 @@ const defaultConfig = {
     name: 'Tiramisu',
     description: 'Classic Italian dessert with mascarpone cream, espresso, and cocoa powder.',
     price: 8.0,
-    image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 3,
+    image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'cheesecake',
     name: 'New York Cheesecake',
     description: 'Creamy cheesecake with graham cracker crust and cherry topping.',
     price: 7.99,
-    image: 'https://images.unsplash.com/photo-1533134242443-742ce9688868?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 3,
+    image: 'https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'house-wine',
     name: 'House Wine',
     description: 'Selection of red and white wines from local vineyards.',
     price: 8.5,
+    estimatedTime: 2,
     image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -119,6 +139,7 @@ const defaultConfig = {
     name: 'Craft Beer',
     description: 'Locally brewed IPA with citrus notes and hoppy finish.',
     price: 6.0,
+    estimatedTime: 2,
     image: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -126,6 +147,7 @@ const defaultConfig = {
     name: 'Signature Cocktail',
     description: 'House-made margarita with fresh lime and agave syrup.',
     price: 10.0,
+    estimatedTime: 5,
     image: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -133,27 +155,31 @@ const defaultConfig = {
     name: 'Espresso',
     description: 'Rich, bold espresso shot with crema, made from premium coffee beans.',
     price: 3.5,
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 2,
+    image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'cappuccino',
     name: 'Cappuccino',
     description: 'Espresso with steamed milk and foam, topped with cocoa powder.',
     price: 4.5,
-    image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba53dba?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 3,
+    image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'iced-tea',
     name: 'Iced Tea',
     description: 'Refreshing iced tea with lemon, served over ice.',
     price: 3.0,
-    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 2,
+    image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'fresh-juice',
     name: 'Fresh Orange Juice',
     description: 'Freshly squeezed orange juice, cold and refreshing.',
     price: 5.0,
+    estimatedTime: 3,
     image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -161,16 +187,19 @@ const defaultConfig = {
     name: 'Soft Drink',
     description: 'Choice of cola, lemonade, or ginger ale.',
     price: 2.5,
-    image: 'https://images.unsplash.com/photo-1554866585-d42d2411adb4?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 1,
+    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 'virgin-mojito',
     name: 'Virgin Mojito',
     description: 'Fresh mint, lime juice, sugar, soda water, and ice - non-alcoholic.',
     price: 5.5,
-    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80',
+    estimatedTime: 4,
+    image: 'https://images.unsplash.com/photo-1561047029-3000fde5734d?auto=format&fit=crop&w=800&q=80',
   },
-];
+  ],
+};
 
 function loadAppConfig() {
   const saved = localStorage.getItem(configKey);
@@ -184,7 +213,12 @@ function loadAppConfig() {
     appConfig = defaultConfig;
   }
 
-  menuItems = (appConfig.menuItems && appConfig.menuItems.length) ? appConfig.menuItems : defaultConfig.menuItems;
+  // Merge saved menuItems with defaults to ensure all items are present
+  const savedMenuItems = appConfig.menuItems || [];
+  menuItems = defaultConfig.menuItems.map(defaultItem => {
+    const savedItem = savedMenuItems.find(item => item.id === defaultItem.id);
+    return savedItem ? { ...defaultItem, ...savedItem, image: defaultItem.image } : defaultItem;
+  });
 
   if (brandTitle) {
     brandTitle.textContent = appConfig.restaurantName;
@@ -232,13 +266,13 @@ function renderCatalog() {
     .map(
       (item) => `
         <article class="catalog-card">
-          <img src="${item.image}" alt="${item.name}" />
+          <img src="${item.image || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80'}" alt="${item.name}" />
           <div>
             <h3>${item.name}</h3>
             <p>${item.description}</p>
           </div>
           <div class="catalog-footer">
-            <span>$${item.price.toFixed(2)}</span>
+            <span>$${item.price.toFixed(2)} | Est. ${item.estimatedTime} min</span>
             <button class="button secondary add-to-cart-button" data-item="${item.id}">Add</button>
           </div>
         </article>
@@ -280,6 +314,20 @@ function renderCart() {
   }, 0);
 
   cartTotalElement.textContent = `$${total.toFixed(2)}`;
+
+  // Calculate average estimated time
+  if (cartEstimatedTimeElement) {
+    const times = cart.map(item => {
+      const menuItem = menuItems.find(menu => menu.id === item.id);
+      return menuItem ? menuItem.estimatedTime : 0;
+    }).filter(t => t > 0);
+    if (times.length > 0) {
+      const averageTime = times.reduce((a, b) => a + b, 0) / times.length;
+      cartEstimatedTimeElement.textContent = `${Math.round(averageTime)} min`;
+    } else {
+      cartEstimatedTimeElement.textContent = '-- min';
+    }
+  }
 
   document.querySelectorAll('.remove-cart-button').forEach((button) => {
     button.addEventListener('click', () => {
@@ -356,18 +404,24 @@ function stopStatusPolling() {
 
 function setWelcomeMessage() {
   if (!selectedTableDisplay) {
+    console.error('selectedTableDisplay element not found!');
     return;
   }
 
-  if (!selectedTable) {
+  console.log('setWelcomeMessage called. selectedTable:', selectedTable);
+
+  if (!selectedTable || selectedTable === 0 || Number.isNaN(selectedTable)) {
+    console.log('selectedTable is falsy, showing awaiting message');
     selectedTableDisplay.innerHTML = `
       <p class="eyebrow">Awaiting table scan</p>
       <h3>Welcome to ${appConfig.restaurantName}.</h3>
       <p>Scan your table QR code from the homepage to begin ordering, or return to the scanner if the table is not yet confirmed.</p>
+      <small style="color: #999; margin-top: 10px; display: block;">[Debug: selectedTable = ${selectedTable}]</small>
     `;
     return;
   }
 
+  console.log('selectedTable is truthy, showing confirmed message for table:', selectedTable);
   selectedTableDisplay.innerHTML = `
     <p class="eyebrow">Table ${selectedTable} confirmed</p>
     <h3>Welcome to ${appConfig.restaurantName}.</h3>
@@ -466,16 +520,51 @@ async function placeOrder() {
 
 function initOrderPage() {
   loadAppConfig();
-  const tableParam = getQueryParam('table');
-  console.log('Order page loaded. Table param from URL:', tableParam);
   
-  // Try to get table from URL parameter first, then localStorage as fallback
-  let table = tableParam ? Number(tableParam) : null;
-  if (!table) {
+  // Get elements (they should exist now after DOMContentLoaded)
+  const debugUrl = document.getElementById('debugUrl');
+  const debugTable = document.getElementById('debugTable');
+  const selectedTableDisplay = document.getElementById('selectedTableDisplay');
+  
+  // Show debug info immediately
+  console.log('=== initOrderPage starting ===');
+  console.log('Window location:', window.location.href);
+  
+  if (debugUrl) {
+    debugUrl.textContent = window.location.href;
+    console.log('Debug URL updated');
+  } else {
+    console.error('debugUrl element not found!');
+  }
+  
+  // Parse table parameter directly from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const tableParam = urlParams.get('table');
+  console.log('URL params:', Array.from(urlParams.entries()));
+  console.log('Table param extracted:', tableParam);
+  
+  if (debugTable) {
+    debugTable.textContent = tableParam || 'null';
+    console.log('Debug table param updated to:', tableParam);
+  } else {
+    console.error('debugTable element not found!');
+  }
+  
+  // Convert to number, or try localStorage as fallback
+  let table = null;
+  
+  if (tableParam) {
+    table = parseInt(tableParam, 10);
+    console.log('Parsed table from URL param:', table, 'isNaN:', Number.isNaN(table));
+  }
+  
+  if (!table || Number.isNaN(table)) {
+    console.log('No valid table param, checking localStorage...');
     const savedState = localStorage.getItem('maankuliTableState');
     if (savedState) {
       try {
         const state = JSON.parse(savedState);
+        console.log('Saved table state:', state);
         for (const [tableId, reserved] of Object.entries(state)) {
           if (reserved) {
             table = Number(tableId);
@@ -490,8 +579,8 @@ function initOrderPage() {
   }
   
   selectedTable = table;
-  console.log('Selected table set to:', selectedTable);
-  console.log('Window location:', window.location.href);
+  console.log('=== Final selectedTable value:', selectedTable, '===');
+  
   setWelcomeMessage();
   renderCatalog();
   renderCart();
@@ -502,3 +591,20 @@ function initOrderPage() {
 }
 
 document.addEventListener('DOMContentLoaded', initOrderPage);
+
+// Also try window.onload as fallback
+window.addEventListener('load', () => {
+  console.log('Window load event fired');
+  if (!selectedTable) {
+    initOrderPage();
+  }
+});
+
+// Additional fallback: if nothing has happened by 2 seconds, try again
+setTimeout(() => {
+  console.log('Timeout check: selectedTable =', selectedTable);
+  if (!selectedTable && !menuItems.length) {
+    console.log('Forcing initOrderPage due to timeout');
+    initOrderPage();
+  }
+}, 2000);

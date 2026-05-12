@@ -2,6 +2,20 @@ const chefGrid = document.getElementById('chefGrid');
 const refreshOrdersButton = document.getElementById('refreshOrders');
 const chefMessage = document.getElementById('chefMessage');
 
+let menuItems = [];
+
+function loadMenuItems() {
+  const saved = localStorage.getItem('maankuliConfig');
+  if (saved) {
+    try {
+      const config = JSON.parse(saved);
+      menuItems = config.menuItems || [];
+    } catch (error) {
+      menuItems = [];
+    }
+  }
+}
+
 async function fetchOrders() {
   try {
     const response = await fetch('/api/orders');
@@ -33,7 +47,7 @@ function createOrderCard(order) {
     )
     .join('');
 
-  const statusLabel = order.status === 'New'
+  let statusLabel = order.status === 'New'
     ? 'New order waiting for kitchen review.'
     : order.status === 'Accepted'
       ? 'Order accepted. Ready to start cooking.'
@@ -42,6 +56,19 @@ function createOrderCard(order) {
         : order.status === 'Ready'
           ? 'Order is ready to serve.'
           : order.status;
+
+  // Calculate average preparation time if preparing
+  let timeInfo = '';
+  if (order.status === 'Preparing') {
+    const times = order.items.map(item => {
+      const menuItem = menuItems.find(m => m.name === item.name);
+      return menuItem ? menuItem.estimatedTime : 0;
+    }).filter(t => t > 0);
+    if (times.length > 0) {
+      const averageTime = times.reduce((a, b) => a + b, 0) / times.length;
+      timeInfo = `Estimated total time: ${Math.round(averageTime)} minutes`;
+    }
+  }
 
   card.innerHTML = `
     <div class="order-card-header">
@@ -58,6 +85,7 @@ function createOrderCard(order) {
       <strong>$${order.total.toFixed(2)}</strong>
     </div>
     <p class="scanner-status">${statusLabel}</p>
+    ${timeInfo ? `<p class="scanner-status">${timeInfo}</p>` : ''}
     <div class="admin-grid">
       ${renderActionButtons(order)}
     </div>
@@ -144,6 +172,7 @@ async function updateOrderStatus(orderId, status) {
 refreshOrdersButton.addEventListener('click', fetchOrders);
 
 window.addEventListener('DOMContentLoaded', () => {
+  loadMenuItems();
   fetchOrders();
   setInterval(fetchOrders, 8000);
 });

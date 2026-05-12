@@ -166,7 +166,7 @@ function renderMenuItems() {
         <strong>Dish ${index + 1}</strong>
         <button type="button" class="button secondary remove-menu-item">Remove</button>
       </div>
-      <img class="menu-item-preview" src="${item.image || 'https://via.placeholder.com/800x450?text=No+image'}" alt="${item.name}" />
+      <img class="menu-item-preview" src="${item.image || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80'}" alt="${item.name}" />
       <label>
         Dish name
         <input type="text" name="name" value="${item.name}" />
@@ -178,6 +178,10 @@ function renderMenuItems() {
       <label>
         Price
         <input type="number" name="price" step="0.01" value="${item.price}" />
+      </label>
+      <label>
+        Estimated Time (minutes)
+        <input type="number" name="estimatedTime" value="${item.estimatedTime || 10}" />
       </label>
       <label>
         Image URL
@@ -211,6 +215,7 @@ function collectMenuItems() {
     const nameInput = card.querySelector('input[name="name"]');
     const descriptionInput = card.querySelector('textarea[name="description"]');
     const priceInput = card.querySelector('input[name="price"]');
+    const estimatedTimeInput = card.querySelector('input[name="estimatedTime"]');
     const imageInput = card.querySelector('input[name="image"]');
 
     return {
@@ -218,6 +223,7 @@ function collectMenuItems() {
       name: nameInput.value.trim() || `Dish ${index + 1}`,
       description: descriptionInput.value.trim() || 'Delicious menu item.',
       price: Number(priceInput.value) || 0,
+      estimatedTime: Number(estimatedTimeInput.value) || 10,
       image: imageInput.value.trim() || defaultConfig.menuItems[index]?.image || '',
     };
   });
@@ -238,7 +244,8 @@ function addMenuItem() {
     name: 'New Dish',
     description: 'Add a description for this dish.',
     price: 0,
-    image: '',
+    estimatedTime: 10,
+    image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
   };
   appConfig.menuItems.push(newItem);
   renderMenuItems();

@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "id": "ORD-1778624425119",
+    "table": 1,
+    "customer": "Table 1",
+    "items": [
+      {
+        "id": "moonlight-curry",
+        "name": "Moonlight Curry",
+        "quantity": 1,
+        "price": 16.5
+      },
+      {
+        "id": "mystic-salad",
+        "name": "Mystic Salad",
+        "quantity": 1,
+        "price": 12
+      },
+      {
+        "id": "sunset-burger",
+        "name": "Sunset Burger",
+        "quantity": 1,
+        "price": 15.9
+      }
+    ],
+    "total": 44.4,
+    "notes": "",
+    "status": "Completed",
+    "createdAt": "2026-05-12T22:20:25.119Z"
+  }
+]

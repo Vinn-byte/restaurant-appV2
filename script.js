@@ -46,6 +46,7 @@ const defaultConfig = {
       name: 'Moonlight Curry',
       description: 'Rich spiced chicken curry, fragrant jasmine rice, and fresh cilantro.',
       price: 16.5,
+      estimatedTime: 25,
       image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -53,6 +54,7 @@ const defaultConfig = {
       name: 'Mystic Salad',
       description: 'Seasonal greens, roasted nuts, berries, and citrus dressing.',
       price: 12.0,
+      estimatedTime: 10,
       image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -60,6 +62,7 @@ const defaultConfig = {
       name: 'Sunset Burger',
       description: 'Grilled beef, caramelized onions, aged cheddar, and house aioli.',
       price: 15.9,
+      estimatedTime: 15,
       image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -67,13 +70,15 @@ const defaultConfig = {
       name: 'Celestial Pasta',
       description: 'Handmade pasta with garlic, cherry tomatoes, olives, and parmesan.',
       price: 14.0,
-      image: 'https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 20,
+      image: 'https://images.unsplash.com/photo-1521389508051-d7ffb5dc8e0f?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'coastal-seafood',
       name: 'Coastal Seafood',
       description: 'Shellfish medley with lemon butter, herbs, and toasted garlic bread.',
       price: 18.75,
+      estimatedTime: 22,
       image: 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -81,34 +86,39 @@ const defaultConfig = {
       name: 'Grilled Salmon',
       description: 'Pan-seared salmon fillet with asparagus, lemon butter, and herb seasoning.',
       price: 19.5,
-      image: 'https://images.unsplash.com/photo-1580959375944-abd7e991f971?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 18,
+      image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'vegetable-stir-fry',
       name: 'Vegetable Stir-Fry',
       description: 'Fresh mixed vegetables with garlic ginger sauce, served over jasmine rice.',
       price: 13.5,
-      image: 'https://images.unsplash.com/photo-1609501676725-7186f017a4b5?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 12,
+      image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'ribeye-steak',
       name: 'Ribeye Steak',
       description: 'Premium cut, grilled to perfection with roasted potatoes and seasonal vegetables.',
       price: 24.99,
-      image: 'https://images.unsplash.com/photo-1599141726850-1d375ed63cb7?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 20,
+      image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'shrimp-risotto',
       name: 'Shrimp Risotto',
       description: 'Creamy arborio rice with garlic butter shrimp, white wine, and parmesan.',
       price: 17.5,
-      image: 'https://images.unsplash.com/photo-1589985643294-4bf00d9bef07?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 22,
+      image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'chocolate-cake',
       name: 'Chocolate Cake',
       description: 'Rich dark chocolate cake with ganache frosting and berry compote.',
       price: 7.5,
+      estimatedTime: 3,
       image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -116,20 +126,23 @@ const defaultConfig = {
       name: 'Tiramisu',
       description: 'Classic Italian dessert with mascarpone cream, espresso, and cocoa powder.',
       price: 8.0,
-      image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 3,
+      image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'cheesecake',
       name: 'New York Cheesecake',
       description: 'Creamy cheesecake with graham cracker crust and cherry topping.',
       price: 7.99,
-      image: 'https://images.unsplash.com/photo-1533134242443-742ce9688868?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 3,
+      image: 'https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'house-wine',
       name: 'House Wine',
       description: 'Selection of red and white wines from local vineyards.',
       price: 8.5,
+      estimatedTime: 2,
       image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -137,6 +150,7 @@ const defaultConfig = {
       name: 'Craft Beer',
       description: 'Locally brewed IPA with citrus notes and hoppy finish.',
       price: 6.0,
+      estimatedTime: 2,
       image: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -144,6 +158,7 @@ const defaultConfig = {
       name: 'Signature Cocktail',
       description: 'House-made margarita with fresh lime and agave syrup.',
       price: 10.0,
+      estimatedTime: 5,
       image: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -151,27 +166,31 @@ const defaultConfig = {
       name: 'Espresso',
       description: 'Rich, bold espresso shot with crema, made from premium coffee beans.',
       price: 3.5,
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 2,
+      image: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'cappuccino',
       name: 'Cappuccino',
       description: 'Espresso with steamed milk and foam, topped with cocoa powder.',
       price: 4.5,
-      image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba53dba?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 3,
+      image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'iced-tea',
       name: 'Iced Tea',
       description: 'Refreshing iced tea with lemon, served over ice.',
       price: 3.0,
-      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 2,
+      image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'fresh-juice',
       name: 'Fresh Orange Juice',
       description: 'Freshly squeezed orange juice, cold and refreshing.',
       price: 5.0,
+      estimatedTime: 3,
       image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=800&q=80',
     },
     {
@@ -179,14 +198,16 @@ const defaultConfig = {
       name: 'Soft Drink',
       description: 'Choice of cola, lemonade, or ginger ale.',
       price: 2.5,
-      image: 'https://images.unsplash.com/photo-1554866585-d42d2411adb4?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 1,
+      image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80',
     },
     {
       id: 'virgin-mojito',
       name: 'Virgin Mojito',
       description: 'Fresh mint, lime juice, sugar, soda water, and ice - non-alcoholic.',
       price: 5.5,
-      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&q=80',
+      estimatedTime: 4,
+      image: 'https://images.unsplash.com/photo-1561047029-3000fde5734d?auto=format&fit=crop&w=800&q=80',
     },
   ],
 };
@@ -228,7 +249,12 @@ function loadAppConfig() {
     appConfig = defaultConfig;
   }
 
-  menuItems = (appConfig.menuItems && appConfig.menuItems.length) ? appConfig.menuItems : defaultConfig.menuItems;
+  // Merge saved menuItems with defaults to ensure all items are present
+  const savedMenuItems = appConfig.menuItems || [];
+  menuItems = defaultConfig.menuItems.map(defaultItem => {
+    const savedItem = savedMenuItems.find(item => item.id === defaultItem.id);
+    return savedItem ? { ...defaultItem, ...savedItem, image: defaultItem.image } : defaultItem;
+  });
 }
 
 function saveAppConfig() {
@@ -282,12 +308,12 @@ function renderMenu() {
     .map(
       (item) => `
         <article class="menu-card">
-          <img src="${item.image}" alt="${item.name}" />
+          <img src="${item.image || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80'}" alt="${item.name}" />
           <div>
             <h3>${item.name}</h3>
             <p>${item.description}</p>
           </div>
-          <span class="price">$${item.price.toFixed(2)}</span>
+          <span class="price">$${item.price.toFixed(2)} | Est. ${item.estimatedTime} min</span>
         </article>
       `,
     )

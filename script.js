@@ -124,13 +124,13 @@ function renderTables() {
   for (let i = 1; i <= 10; i += 1) {
     const canvas = document.getElementById(`tableQr-${i}`);
     if (canvas) {
-      canvas.width = 180;
-      canvas.height = 180;
+      canvas.width = 256;
+      canvas.height = 256;
       QRCode.toCanvas(canvas, getTableQrUrl(i), {
-        width: 180,
-        margin: 0,
+        width: 256,
+        margin: 1,
         color: {
-          dark: '#0f172a',
+          dark: '#000000',
           light: '#ffffff',
         },
       }).catch((error) => {
@@ -320,6 +320,7 @@ function placeOrder() {
 }
 
 function handleScanResult(result) {
+  console.log('Scanned result:', result);
   if (!result) {
     showMessage('No QR code found yet. Point your camera steadily at the code.');
     return;
@@ -426,6 +427,7 @@ function tick() {
   });
 
   if (code) {
+    console.log('QR code detected:', code.data);
     handleScanResult(code.data);
   } else {
     showMessage('Searching for a QR code...');

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maankuli Restaurant | Table Ordering</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo">Ma</span>
+        <div>
+          <h1>Maankuli Restaurant</h1>
+          <p>Table ordering experience</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#scanner">Scan Table</a>
+        <a href="#order-panel">Order</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="catalog-section">
+        <div class="section-heading">
+          <p class="eyebrow">Table Ordering</p>
+          <h2>Your table is ready. Start your order.</h2>
+        </div>
+
+        <div id="selectedTableDisplay" class="welcome-panel">
+          <p class="eyebrow">Awaiting table scan</p>
+          <h3>Welcome, dear customer.</h3>
+          <p>Scan your table QR code from the homepage to begin ordering, or return to the scanner if the table is not yet confirmed.</p>
+        </div>
+
+        <div class="catalog-layout" id="order-panel">
+          <div id="catalogGrid" class="catalog-grid"></div>
+          <aside class="cart-panel">
+            <div class="cart-header">
+              <h3>Your Order</h3>
+              <p>Selected dishes will appear here.</p>
+            </div>
+            <div id="cartItems" class="cart-items"></div>
+            <div class="cart-total">
+              <span>Total</span>
+              <strong id="cartTotal">$0.00</strong>
+            </div>
+            <button id="placeOrderButton" class="button primary">Place Order</button>
+            <div id="cartMessage" class="scanner-status"></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <script src="order.js"></script>
+  </body>
+</html>

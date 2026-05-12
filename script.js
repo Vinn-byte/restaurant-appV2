@@ -799,6 +799,16 @@ function refreshTableStatus() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Check if a table parameter is in the URL (from scanning a table QR code)
+  const params = new URLSearchParams(window.location.search);
+  const tableParam = params.get('table');
+  if (tableParam && !Number.isNaN(Number(tableParam))) {
+    const tableId = Number(tableParam);
+    // Redirect to order page with the table parameter
+    window.location.href = `order.html?table=${tableId}`;
+    return;
+  }
+
   loadAppConfig();
   applySiteContent();
   renderMenu();

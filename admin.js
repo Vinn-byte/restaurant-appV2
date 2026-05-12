@@ -19,9 +19,9 @@ const resetConfigButton = document.getElementById('resetConfigButton');
 const statusMessage = document.getElementById('statusMessage');
 
 const configKey = 'maankuliConfig';
-const ordersKey = 'maankuliOrders';
 const adminAuthKey = 'maankuliAdminAuth';
 const adminPassword = 'maankuli123';
+const serverOrdersApi = '/api/orders';
 
 let appConfig = null;
 let orders = [];
@@ -89,30 +89,54 @@ function saveAppConfig() {
   localStorage.setItem(configKey, JSON.stringify(appConfig));
 }
 
-function loadOrders() {
-  const saved = localStorage.getItem(ordersKey);
-  if (saved) {
-    try {
-      orders = JSON.parse(saved);
-    } catch (error) {
-      orders = [];
+async function fetchOrdersFromServer() {
+  try {
+    const response = await fetch(serverOrdersApi);
+    if (!response.ok) {
+      throw new Error('Unable to fetch orders from the server.');
     }
-  } else {
+    orders = await response.json();
+  } catch (error) {
+    console.error(error);
     orders = [];
   }
 }
 
-function saveOrders() {
-  localStorage.setItem(ordersKey, JSON.stringify(orders));
+async function updateOrderOnServer(orderId, changes) {
+  const response = await fetch(`${serverOrdersApi}/${orderId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(changes),
+  });
+
+  if (!response.ok) {
+    throw new Error('Unable to update order on the server.');
+  }
+
+  return response.json();
 }
 
-function renderAdminView() {
+async function deleteOrderFromServer(orderId) {
+  const response = await fetch(`${serverOrdersApi}/${orderId}`, { method: 'DELETE' });
+  if (!response.ok && response.status !== 204) {
+    throw new Error('Unable to delete order from the server.');
+  }
+}
+
+async function clearAllServerOrders() {
+  const response = await fetch(serverOrdersApi, { method: 'DELETE' });
+  if (!response.ok && response.status !== 204) {
+    throw new Error('Unable to clear server orders.');
+  }
+}
+
+async function renderAdminView() {
   const authenticated = sessionStorage.getItem(adminAuthKey) === 'true';
   if (authenticated) {
     adminLoginView.classList.add('hidden');
     adminPanel.classList.remove('hidden');
     loadAppConfig();
-    loadOrders();
+    await fetchOrdersFromServer();
     populateSettings();
     renderMenuItems();
     renderOrders();
@@ -284,26 +308,47 @@ function createOrderCard(order) {
   const statusSelect = card.querySelector('select[name="order-status"]');
   const notesInput = card.querySelector('textarea[name="order-notes"]');
 
-  deleteButton.addEventListener('click', () => {
-    orders = orders.filter((current) => current.id !== order.id);
-    saveOrders();
-    renderOrders();
+  deleteButton.addEventListener('click', async () => {
+    try {
+      await deleteOrderFromServer(order.id);
+      await fetchOrdersFromServer();
+      renderOrders();
+    } catch (error) {
+      console.error(error);
+      statusMessage.textContent = 'Unable to delete this order right now.';
+      setTimeout(() => {
+        statusMessage.textContent = '';
+      }, 2500);
+    }
   });
 
-  saveOrderButton.addEventListener('click', () => {
+  saveOrderButton.addEventListener('click', async () => {
     const orderToUpdate = orders.find((current) => current.id === order.id);
     if (!orderToUpdate) {
       return;
     }
-    orderToUpdate.table = Number(tableInput.value) || order.table;
-    orderToUpdate.status = statusSelect.value;
-    orderToUpdate.notes = notesInput.value.trim();
-    saveOrders();
-    statusMessage.textContent = `Order ${order.id} updated.`;
-    setTimeout(() => {
-      statusMessage.textContent = '';
-    }, 2500);
-    renderOrders();
+
+    const updates = {
+      table: Number(tableInput.value) || order.table,
+      status: statusSelect.value,
+      notes: notesInput.value.trim(),
+    };
+
+    try {
+      await updateOrderOnServer(order.id, updates);
+      await fetchOrdersFromServer();
+      statusMessage.textContent = `Order ${order.id} updated.`;
+      setTimeout(() => {
+        statusMessage.textContent = '';
+      }, 2500);
+      renderOrders();
+    } catch (error) {
+      console.error(error);
+      statusMessage.textContent = 'Unable to save changes for this order.';
+      setTimeout(() => {
+        statusMessage.textContent = '';
+      }, 2500);
+    }
   });
 
   return card;
@@ -326,14 +371,21 @@ function renderOrders() {
   });
 }
 
-function handleClearOrders() {
+async function handleClearOrders() {
   if (!confirm('Clear all saved orders from storage?')) {
     return;
   }
-  orders = [];
-  saveOrders();
-  renderOrders();
-  statusMessage.textContent = 'All orders cleared.';
+
+  try {
+    await clearAllServerOrders();
+    orders = [];
+    renderOrders();
+    statusMessage.textContent = 'All orders cleared.';
+  } catch (error) {
+    console.error(error);
+    statusMessage.textContent = 'Unable to clear orders from the server.';
+  }
+
   setTimeout(() => {
     statusMessage.textContent = '';
   }, 2500);
@@ -343,7 +395,6 @@ function handleSave(event) {
   event.preventDefault();
   applySettingsFromForm();
   saveAppConfig();
-  saveOrders();
   statusMessage.textContent = 'Restaurant settings updated successfully.';
   setTimeout(() => {
     statusMessage.textContent = '';

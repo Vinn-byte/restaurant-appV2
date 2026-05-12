@@ -1,0 +1,12 @@
+{
+  "name": "maankuli-restaurant",
+  "version": "1.0.0",
+  "description": "QR restaurant website with chef backend and order management.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.4"
+  }
+}

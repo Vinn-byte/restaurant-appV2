@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maankuli Chef Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <span class="logo">Ch</span>
+        <div>
+          <h1>Chef Dashboard</h1>
+          <p>Track and accept live orders</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="admin.html">Admin</a>
+        <a href="chef.html">Chef</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="order-section">
+        <div class="section-heading">
+          <p class="eyebrow">Kitchen Orders</p>
+          <h2>All placed orders appear here for the chef team.</h2>
+        </div>
+
+        <div class="tables-actions">
+          <button id="refreshOrders" class="button secondary">Refresh Orders</button>
+          <span id="chefMessage" class="scanner-status"></span>
+        </div>
+
+        <div id="chefGrid" class="chef-grid"></div>
+      </section>
+    </main>
+
+    <script src="chef.js"></script>
+  </body>
+</html>

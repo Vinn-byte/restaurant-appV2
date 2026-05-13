@@ -191,7 +191,7 @@ module.exports = app;
 
 // For local development, still allow running with node server.js
 if (require.main === module) {
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Chef server started on http://localhost:${PORT}`);
   });
 }

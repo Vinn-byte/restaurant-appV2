@@ -265,6 +265,44 @@ function saveOrders() {
   localStorage.setItem(ordersKey, JSON.stringify(orders));
 }
 
+function computeEstimatedTimeFromItems(items) {
+  const times = items
+    .map((item) => {
+      const menuItem = menuItems.find((menu) => menu.id === item.id || menu.name === item.name);
+      return menuItem ? menuItem.estimatedTime : 0;
+    })
+    .filter((time) => Number.isFinite(time) && time > 0);
+
+  if (times.length === 0) {
+    return 0;
+  }
+
+  return Math.round(times.reduce((sum, time) => sum + time, 0) / times.length);
+}
+
+function createLocalOrder(payload) {
+  const estimatedTime = computeEstimatedTimeFromItems(payload.items);
+  const order = {
+    id: generateOrderId(),
+    table: payload.table,
+    customer: payload.customer || `Table ${payload.table}`,
+    items: payload.items,
+    total: Number(payload.total) || 0,
+    notes: payload.notes || '',
+    status: 'Accepted',
+    estimatedTime,
+    createdAt: new Date().toISOString(),
+  };
+
+  orders.push(order);
+  saveOrders();
+  return order;
+}
+
+function getLocalOrder(orderId) {
+  return orders.find((item) => item.id === orderId);
+}
+
 function generateOrderId() {
   return `ORD-${Date.now()}`;
 }
@@ -355,25 +393,40 @@ function renderCart() {
 }
 
 async function createServerOrder(orderPayload) {
-  const response = await fetch('/api/orders', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(orderPayload),
-  });
+  try {
+    const response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderPayload),
+    });
 
-  if (!response.ok) {
-    throw new Error('Failed to send order to the server.');
+    if (!response.ok) {
+      console.warn('Server order failed, falling back to local order.', response.status);
+      return createLocalOrder(orderPayload);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.warn('Server unavailable, falling back to local order.', error);
+    return createLocalOrder(orderPayload);
   }
-
-  return response.json();
 }
 
 async function fetchOrderStatus(orderId) {
-  const response = await fetch(`/api/orders/${orderId}`);
-  if (!response.ok) {
+  try {
+    const response = await fetch(`/api/orders/${orderId}`);
+    if (!response.ok) {
+      throw new Error('Unable to get order status.');
+    }
+    return response.json();
+  } catch (error) {
+    console.warn('Unable to fetch order status from server, using local copy if available.', error);
+    const localOrder = getLocalOrder(orderId);
+    if (localOrder) {
+      return localOrder;
+    }
     throw new Error('Unable to get order status.');
   }
-  return response.json();
 }
 
 function displayOrderStatus(order) {
@@ -647,6 +700,7 @@ async function placeOrder() {
 }
 
 function initOrderPage() {
+  loadOrders();
   loadAppConfig();
   
   // Get elements (they should exist now after DOMContentLoaded)

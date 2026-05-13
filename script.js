@@ -214,8 +214,8 @@ const defaultConfig = {
 
 function getTableQrUrl(tableId) {
   // Generate URL that works with external QR scanner apps
-  // Uses absolute URL with /scan endpoint for better app compatibility
-  return `${window.location.origin}/scan?table=${tableId}`;
+  // Use the static landing page directly to avoid relying on server-side /scan route.
+  return `${window.location.origin}/scan.html?table=${tableId}`;
 }
 
 function loadTableState() {

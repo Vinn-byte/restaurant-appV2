@@ -88,6 +88,11 @@ app.get('/scan', (req, res) => {
 
 app.use(express.static(path.join(__dirname)));
 
+// Serve index.html for root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 app.get('/api/orders', (req, res) => {
   res.json(orders.slice().reverse());
 });
@@ -180,9 +185,6 @@ app.delete('/api/orders', (req, res) => {
 });
 
 loadOrdersFile();
-
-// Start automatic order completion check every minute
-setInterval(checkAndCompleteOrders, 60 * 1000);
 
 // For Vercel serverless functions, export the app instead of calling app.listen()
 module.exports = app;

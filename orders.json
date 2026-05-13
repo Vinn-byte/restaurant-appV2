@@ -27,5 +27,128 @@
     "notes": "",
     "status": "Completed",
     "createdAt": "2026-05-12T22:20:25.119Z"
+  },
+  {
+    "id": "ORD-1778661584391",
+    "table": 2,
+    "customer": "Table 2",
+    "items": [
+      {
+        "id": "sunset-burger",
+        "name": "Sunset Burger",
+        "quantity": 1,
+        "price": 15.9
+      },
+      {
+        "id": "mystic-salad",
+        "name": "Mystic Salad",
+        "quantity": 1,
+        "price": 12
+      },
+      {
+        "id": "moonlight-curry",
+        "name": "Moonlight Curry",
+        "quantity": 1,
+        "price": 16.5
+      },
+      {
+        "id": "grilled-salmon",
+        "name": "Grilled Salmon",
+        "quantity": 1,
+        "price": 19.5
+      }
+    ],
+    "total": 63.9,
+    "notes": "",
+    "status": "Completed",
+    "createdAt": "2026-05-13T08:39:44.391Z",
+    "statusChangedAt": "2026-05-13T09:04:37.543Z",
+    "estimatedTime": 5
+  },
+  {
+    "id": "ORD-1778662396092",
+    "table": 2,
+    "customer": "Table 2",
+    "items": [
+      {
+        "id": "moonlight-curry",
+        "name": "Moonlight Curry",
+        "quantity": 3,
+        "price": 16.5
+      },
+      {
+        "id": "mystic-salad",
+        "name": "Mystic Salad",
+        "quantity": 1,
+        "price": 12
+      }
+    ],
+    "total": 61.5,
+    "notes": "",
+    "status": "Ready",
+    "createdAt": "2026-05-13T08:53:16.092Z",
+    "statusChangedAt": "2026-05-13T09:49:37.125Z",
+    "estimatedTime": 10
+  },
+  {
+    "id": "ORD-1778663328864",
+    "table": 2,
+    "customer": "Table 2",
+    "items": [
+      {
+        "id": "shrimp-risotto",
+        "name": "Shrimp Risotto",
+        "quantity": 1,
+        "price": 17.5
+      },
+      {
+        "id": "coastal-seafood",
+        "name": "Coastal Seafood",
+        "quantity": 1,
+        "price": 18.75
+      }
+    ],
+    "total": 36.25,
+    "notes": "",
+    "status": "Ready",
+    "createdAt": "2026-05-13T09:08:48.864Z",
+    "statusChangedAt": "2026-05-13T09:12:46.881Z",
+    "estimatedTime": 10
+  },
+  {
+    "id": "ORD-1778664153053",
+    "table": 2,
+    "customer": "Table 2",
+    "items": [
+      {
+        "id": "shrimp-risotto",
+        "name": "Shrimp Risotto",
+        "quantity": 1,
+        "price": 17.5
+      }
+    ],
+    "total": 17.5,
+    "notes": "",
+    "status": "Ready",
+    "createdAt": "2026-05-13T09:22:33.053Z",
+    "statusChangedAt": "2026-05-13T09:44:28.201Z",
+    "estimatedTime": 15
+  },
+  {
+    "id": "ORD-1778666060870",
+    "table": 2,
+    "customer": "Table 2",
+    "items": [
+      {
+        "id": "moonlight-curry",
+        "name": "Moonlight Curry",
+        "quantity": 1,
+        "price": 16.5
+      }
+    ],
+    "total": 16.5,
+    "notes": "",
+    "status": "Accepted",
+    "createdAt": "2026-05-13T09:54:20.870Z"
   }
 ]

@@ -33,6 +33,29 @@ function generateOrderId() {
   return `ORD-${Date.now()}`;
 }
 
+// Function to automatically complete orders based on estimated time
+function checkAndCompleteOrders() {
+  const now = new Date();
+  let hasChanges = false;
+
+  orders.forEach(order => {
+    if (order.status === 'Preparing' && order.estimatedTime && order.statusChangedAt) {
+      const statusChangedTime = new Date(order.statusChangedAt);
+      const elapsedMinutes = (now - statusChangedTime) / (1000 * 60);
+
+      if (elapsedMinutes >= order.estimatedTime) {
+        order.status = 'Ready';
+        hasChanges = true;
+        console.log(`Order ${order.id} automatically marked as Ready after ${order.estimatedTime} minutes`);
+      }
+    }
+  });
+
+  if (hasChanges) {
+    saveOrdersFile();
+  }
+}
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
@@ -72,14 +95,25 @@ app.post('/api/orders', (req, res) => {
 });
 
 app.patch('/api/orders/:id', (req, res) => {
+  console.log(`PATCH /api/orders/${req.params.id} received`);
+  console.log('Request body:', req.body);
+  
   const order = orders.find((item) => item.id === req.params.id);
   if (!order) {
+    console.log('Order not found');
     return res.status(404).json({ error: 'Order not found.' });
   }
 
-  const { status, notes, table, customer } = req.body;
+  console.log('Found order:', order.id, 'current status:', order.status);
+  
+  const { status, notes, table, customer, estimatedTime } = req.body;
   if (status) {
+    console.log('Updating status to:', status);
     order.status = status;
+    // Record when status changes to 'Preparing' for automatic completion
+    if (status === 'Preparing') {
+      order.statusChangedAt = new Date().toISOString();
+    }
   }
   if (typeof notes === 'string') {
     order.notes = notes;
@@ -90,8 +124,13 @@ app.patch('/api/orders/:id', (req, res) => {
   if (customer) {
     order.customer = customer;
   }
+  if (typeof estimatedTime === 'number') {
+    console.log('Setting estimatedTime to:', estimatedTime);
+    order.estimatedTime = estimatedTime;
+  }
 
   saveOrdersFile();
+  console.log('Order updated successfully:', order);
   res.json(order);
 });
 
@@ -112,6 +151,10 @@ app.delete('/api/orders', (req, res) => {
 });
 
 loadOrdersFile();
+
+// Start automatic order completion check every minute
+setInterval(checkAndCompleteOrders, 60 * 1000);
+
 app.listen(PORT, () => {
   console.log(`Chef server started on http://localhost:${PORT}`);
 });

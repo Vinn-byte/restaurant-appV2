@@ -828,3 +828,531 @@ img {
     padding-top: 3rem;
   }
 }
+
+/* Cooking Animation Modal */
+.cooking-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+}
+
+.cooking-modal-content {
+  background: var(--surface-strong);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 2rem;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.cooking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.cooking-header h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--text);
+}
+
+.cooking-timer {
+  margin-bottom: 2rem;
+}
+
+.cooking-timer #cookingTimeRemaining {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.cooking-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cooking-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #d19224);
+  width: 0%;
+  transition: width 1s linear;
+  border-radius: 4px;
+}
+
+.cooking-animation {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.cooking-pot {
+  position: relative;
+  width: 200px;
+  height: 180px;
+}
+
+.pot-base {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 20px;
+  background: linear-gradient(135deg, #666, #444);
+  border-radius: 10px;
+}
+
+.pot-body {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 120px;
+  background: linear-gradient(135deg, #888, #666);
+  border-radius: 20px 20px 0 0;
+  border: 3px solid #555;
+  overflow: hidden;
+}
+
+.pot-contents {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cooking-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.cooking-stage.active {
+  opacity: 1;
+}
+
+.cooking-stage p {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.pot-handle {
+  position: absolute;
+  top: 40px;
+  right: 20px;
+  width: 40px;
+  height: 20px;
+  background: linear-gradient(135deg, #666, #444);
+  border-radius: 10px;
+}
+
+/* Empty Pot Stage */
+.empty-pot-icon {
+  font-size: 3rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Pouring Ingredients Stage */
+.pouring-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ingredient {
+  position: absolute;
+  font-size: 1.5rem;
+  animation: pourIn 1.5s ease-in-out infinite;
+}
+
+.ingredient.tomato {
+  animation-delay: 0s;
+  top: 20px;
+  left: 30px;
+}
+
+.ingredient.lettuce {
+  animation-delay: 0.3s;
+  top: 15px;
+  left: 60px;
+}
+
+.ingredient.cheese {
+  animation-delay: 0.6s;
+  top: 25px;
+  right: 35px;
+}
+
+.ingredient.meat {
+  animation-delay: 0.9s;
+  top: 20px;
+  right: 60px;
+}
+
+.ingredient-stream {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  animation: stream 1s ease-in-out infinite;
+}
+
+@keyframes pourIn {
+  0% {
+    transform: translateY(-50px) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(20px) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+@keyframes stream {
+  0%, 100% { opacity: 0; transform: translateX(-50%) translateY(0px); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(10px); }
+}
+
+/* Mixing Ingredients Stage */
+.mixing-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spoon {
+  font-size: 2rem;
+  animation: stir 1s ease-in-out infinite;
+}
+
+.mix-cloud {
+  position: absolute;
+  font-size: 1.2rem;
+  animation: float 2s ease-in-out infinite;
+}
+
+.mix-cloud-2 {
+  animation-delay: 0.5s;
+  top: 30px;
+  left: 40px;
+}
+
+.mix-cloud-3 {
+  animation-delay: 1s;
+  bottom: 30px;
+  right: 40px;
+}
+
+@keyframes stir {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(45deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-45deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+  50% { transform: translateY(-10px) scale(1.2); opacity: 1; }
+}
+
+/* Serving Sandwich Stage */
+.sandwich-assembly {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.layer {
+  font-size: 1.5rem;
+  opacity: 0;
+  animation: assemble 0.8s ease-out forwards;
+}
+
+.bread-bottom {
+  animation-delay: 0s;
+}
+
+.layer.lettuce-layer {
+  animation-delay: 0.2s;
+}
+
+.layer.tomato-layer {
+  animation-delay: 0.4s;
+}
+
+.layer.cheese-layer {
+  animation-delay: 0.6s;
+}
+
+.layer.meat-layer {
+  animation-delay: 0.8s;
+}
+
+.bread-top {
+  animation-delay: 1s;
+}
+
+@keyframes assemble {
+  0% {
+    transform: translateY(-30px) scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Ready to Serve Stage */
+.ready-plate {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.plate {
+  font-size: 2.5rem;
+}
+
+.finished-sandwich {
+  font-size: 2rem;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+.steam {
+  position: absolute;
+  top: -15px;
+  right: -10px;
+  font-size: 1.2rem;
+  animation: steam 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes steam {
+  0%, 100% { opacity: 0; transform: translateY(0px); }
+  50% { opacity: 1; transform: translateY(-10px); }
+}
+
+.cooking-status {
+  margin-top: 1.5rem;
+}
+
+.cooking-status p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--surface-strong);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.75rem;
+  padding: 2rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+}
+
+.modal-content h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+.modal-content p {
+  margin: 0 0 1.5rem;
+  color: var(--muted);
+}
+
+.modal-input-group {
+  margin-bottom: 1.5rem;
+}
+
+.modal-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  color: var(--text);
+  padding: 1.1rem 1.2rem;
+  font: inherit;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: rgba(244, 193, 82, 0.5);
+  box-shadow: 0 0 0 3px rgba(244, 193, 82, 0.1);
+}
+
+.modal-input::placeholder {
+  color: var(--muted);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.modal-actions .button {
+  width: 100%;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.button.small {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  min-width: auto;
+  width: auto;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--surface-strong);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.75rem;
+  padding: 2rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+}
+
+.modal-content h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+.modal-content p {
+  margin: 0 0 1.5rem;
+  color: var(--muted);
+}
+
+.modal-input-group {
+  margin-bottom: 1.5rem;
+}
+
+.modal-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  color: var(--text);
+  padding: 1.1rem 1.2rem;
+  font: inherit;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: rgba(244, 193, 82, 0.5);
+  box-shadow: 0 0 0 3px rgba(244, 193, 82, 0.1);
+}
+
+.modal-input::placeholder {
+  color: var(--muted);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.modal-actions .button {
+  width: 100%;
+}

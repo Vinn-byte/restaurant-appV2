@@ -66,6 +66,88 @@
           </aside>
         </div>
       </section>
+
+      <!-- Cooking Animation Modal -->
+      <div id="cookingModal" class="cooking-modal" style="display: none;">
+        <div class="cooking-modal-content">
+          <div class="cooking-header">
+            <h3>Your meal is being prepared</h3>
+            <button id="toggleCookingModalButton" class="button small secondary" title="Toggle animation visibility">👁</button>
+            <div class="cooking-timer">
+              <span id="cookingTimeRemaining">0:00</span>
+              <div class="cooking-progress-bar">
+                <div id="cookingProgressFill" class="cooking-progress-fill"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cooking-animation">
+            <div class="cooking-pot">
+              <div class="pot-base"></div>
+              <div class="pot-body">
+                <div class="pot-contents">
+                  <!-- Empty pot initially -->
+                  <div id="emptyPot" class="cooking-stage active">
+                    <div class="empty-pot-icon">🍳</div>
+                    <p>Preparing your ingredients...</p>
+                  </div>
+
+                  <!-- Ingredients pouring -->
+                  <div id="pouringIngredients" class="cooking-stage">
+                    <div class="pouring-animation">
+                      <div class="ingredient tomato">🍅</div>
+                      <div class="ingredient lettuce">🥬</div>
+                      <div class="ingredient cheese">🧀</div>
+                      <div class="ingredient meat">🥩</div>
+                      <div class="ingredient-stream">💧💧💧</div>
+                    </div>
+                    <p>Adding fresh ingredients...</p>
+                  </div>
+
+                  <!-- Mixing ingredients -->
+                  <div id="mixingIngredients" class="cooking-stage">
+                    <div class="mixing-animation">
+                      <div class="spoon">🥄</div>
+                      <div class="mix-cloud">💫</div>
+                      <div class="mix-cloud mix-cloud-2">✨</div>
+                      <div class="mix-cloud mix-cloud-3">🌟</div>
+                    </div>
+                    <p>Mixing everything together...</p>
+                  </div>
+
+                  <!-- Serving sandwich -->
+                  <div id="servingSandwich" class="cooking-stage">
+                    <div class="sandwich-assembly">
+                      <div class="bread-bottom">🍞</div>
+                      <div class="layer lettuce-layer">🥬</div>
+                      <div class="layer tomato-layer">🍅</div>
+                      <div class="layer cheese-layer">🧀</div>
+                      <div class="layer meat-layer">🥩</div>
+                      <div class="bread-top">🍞</div>
+                    </div>
+                    <p>Assembling your perfect sandwich...</p>
+                  </div>
+
+                  <!-- Ready to serve -->
+                  <div id="readyToServe" class="cooking-stage">
+                    <div class="ready-plate">
+                      <div class="plate">🍽️</div>
+                      <div class="finished-sandwich">🥪</div>
+                      <div class="steam">💨</div>
+                    </div>
+                    <p>Your meal is ready!</p>
+                  </div>
+                </div>
+              </div>
+              <div class="pot-handle"></div>
+            </div>
+          </div>
+
+          <div class="cooking-status">
+            <p id="cookingStatusText">Chef is preparing your order...</p>
+          </div>
+        </div>
+      </div>
     </main>
 
     <script src="order.js"></script>

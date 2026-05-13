@@ -29,12 +29,39 @@
 
         <div class="tables-actions">
           <button id="refreshOrders" class="button secondary">Refresh Orders</button>
+          <button id="testModal" class="button secondary">Test Modal</button>
+          <button id="testFetch" class="button secondary">Test Fetch</button>
           <span id="chefMessage" class="scanner-status"></span>
         </div>
 
         <div id="chefGrid" class="chef-grid"></div>
       </section>
     </main>
+
+    <!-- Estimated Time Modal -->
+    <div id="estimatedTimeModal" class="modal" style="display: none;">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Enter Estimated Preparation Time</h3>
+          <button id="toggleInputButton" class="button small secondary" title="Toggle input visibility">👁</button>
+        </div>
+        <p>How many minutes will it take to prepare this order?</p>
+        <div class="modal-input-group" id="inputGroup">
+          <input 
+            type="number" 
+            id="estimatedTimeInput" 
+            min="1" 
+            max="180" 
+            placeholder="Enter minutes (1-180)"
+            class="modal-input"
+          />
+        </div>
+        <div class="modal-actions">
+          <button id="confirmTimeButton" type="button" class="button primary">Start Cooking</button>
+          <button id="cancelTimeButton" type="button" class="button secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
 
     <script src="chef.js"></script>
   </body>

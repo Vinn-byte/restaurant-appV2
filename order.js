@@ -10,12 +10,29 @@ const orderStatusPanel = document.getElementById('orderStatusPanel');
 const brandTitle = document.querySelector('.brand h1');
 const brandSubtitle = document.querySelector('.brand p');
 
+// Cooking animation elements
+const cookingModal = document.getElementById('cookingModal');
+const cookingTimeRemaining = document.getElementById('cookingTimeRemaining');
+const cookingProgressFill = document.getElementById('cookingProgressFill');
+const cookingStatusText = document.getElementById('cookingStatusText');
+const toggleCookingModalButton = document.getElementById('toggleCookingModalButton');
+
+// Cooking stages
+const emptyPot = document.getElementById('emptyPot');
+const pouringIngredients = document.getElementById('pouringIngredients');
+const mixingIngredients = document.getElementById('mixingIngredients');
+const servingSandwich = document.getElementById('servingSandwich');
+const readyToServe = document.getElementById('readyToServe');
+
 let selectedTable = null;
 let cart = [];
 let menuItems = [];
 let appConfig = {};
 let orders = [];
 let statusPollInterval = null;
+let cookingAnimationInterval = null;
+let cookingStartTime = null;
+let cookingDuration = 0;
 
 const ordersKey = 'maankuliOrders';
 
@@ -365,14 +382,21 @@ function displayOrderStatus(order) {
   }
 
   if (order.status === 'Accepted') {
+    hideCookingAnimation();
     orderStatusPanel.textContent = 'Chef has accepted the order and will begin preparing it soon.';
   } else if (order.status === 'Preparing') {
     orderStatusPanel.textContent = 'Your meal is being prepared by the kitchen.';
+    if (order.estimatedTime) {
+      startCookingAnimation(order.estimatedTime);
+    }
   } else if (order.status === 'Ready') {
-    orderStatusPanel.textContent = 'Your meal is ready to be served.';
+    hideCookingAnimation();
+    orderStatusPanel.textContent = 'Your meal is ready to be served!';
   } else if (order.status === 'Completed') {
-    orderStatusPanel.textContent = 'Your order has been completed.';
+    hideCookingAnimation();
+    orderStatusPanel.textContent = 'Your order has been completed. Enjoy your meal!';
   } else {
+    hideCookingAnimation();
     orderStatusPanel.textContent = 'The kitchen has received your order and will review it shortly.';
   }
 }
@@ -395,11 +419,115 @@ function startStatusPolling(orderId) {
   }, 5000);
 }
 
+function startCookingAnimation(durationMinutes) {
+  if (!cookingModal) return;
+
+  cookingDuration = durationMinutes * 60 * 1000; // Convert to milliseconds
+  cookingStartTime = Date.now();
+
+  // Show modal
+  cookingModal.style.display = 'flex';
+
+  // Ensure animation is visible
+  const cookingAnimation = document.querySelector('.cooking-animation');
+  if (cookingAnimation) {
+    cookingAnimation.style.display = 'block';
+  }
+  if (toggleCookingModalButton) {
+    toggleCookingModalButton.textContent = '👁';
+  }
+
+  // Reset all stages
+  [emptyPot, pouringIngredients, mixingIngredients, servingSandwich, readyToServe].forEach(stage => {
+    stage.classList.remove('active');
+  });
+
+  // Start with empty pot
+  emptyPot.classList.add('active');
+  cookingStatusText.textContent = 'Chef is preparing your ingredients...';
+
+  // Clear any existing animation
+  if (cookingAnimationInterval) {
+    clearInterval(cookingAnimationInterval);
+  }
+
+  // Start animation loop
+  cookingAnimationInterval = setInterval(() => {
+    updateCookingAnimation();
+  }, 1000);
+}
+
+function updateCookingAnimation() {
+  if (!cookingStartTime || !cookingDuration) return;
+
+  const elapsed = Date.now() - cookingStartTime;
+  const remaining = Math.max(0, cookingDuration - elapsed);
+  const progress = Math.min(100, (elapsed / cookingDuration) * 100);
+
+  // Update timer display
+  const minutes = Math.floor(remaining / 60000);
+  const seconds = Math.floor((remaining % 60000) / 1000);
+  cookingTimeRemaining.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+  // Update progress bar
+  cookingProgressFill.style.width = `${progress}%`;
+
+  // Update animation stages based on progress
+  const stageDuration = cookingDuration / 5; // 5 stages
+
+  if (elapsed < stageDuration) {
+    // Stage 1: Empty pot (0-20%)
+    setActiveStage(emptyPot);
+    cookingStatusText.textContent = 'Chef is preparing your ingredients...';
+  } else if (elapsed < stageDuration * 2) {
+    // Stage 2: Pouring ingredients (20-40%)
+    setActiveStage(pouringIngredients);
+    cookingStatusText.textContent = 'Adding fresh ingredients to your meal...';
+  } else if (elapsed < stageDuration * 3) {
+    // Stage 3: Mixing ingredients (40-60%)
+    setActiveStage(mixingIngredients);
+    cookingStatusText.textContent = 'Mixing everything together perfectly...';
+  } else if (elapsed < stageDuration * 4) {
+    // Stage 4: Serving sandwich (60-80%)
+    setActiveStage(servingSandwich);
+    cookingStatusText.textContent = 'Assembling your perfect sandwich...';
+  } else {
+    // Stage 5: Ready to serve (80-100%)
+    setActiveStage(readyToServe);
+    cookingStatusText.textContent = 'Your meal is almost ready!';
+  }
+
+  // When animation completes
+  if (elapsed >= cookingDuration) {
+    hideCookingAnimation();
+  }
+}
+
+function setActiveStage(activeStage) {
+  [emptyPot, pouringIngredients, mixingIngredients, servingSandwich, readyToServe].forEach(stage => {
+    stage.classList.remove('active');
+  });
+  activeStage.classList.add('active');
+}
+
+function hideCookingAnimation() {
+  if (cookingModal) {
+    cookingModal.style.display = 'none';
+  }
+  if (cookingAnimationInterval) {
+    clearInterval(cookingAnimationInterval);
+    cookingAnimationInterval = null;
+  }
+  cookingStartTime = null;
+  cookingDuration = 0;
+}
+
 function stopStatusPolling() {
   if (statusPollInterval) {
     clearInterval(statusPollInterval);
     statusPollInterval = null;
   }
+  hideCookingAnimation();
 }
 
 function setWelcomeMessage() {
@@ -587,6 +715,20 @@ function initOrderPage() {
 
   if (placeOrderButton) {
     placeOrderButton.addEventListener('click', placeOrder);
+  }
+
+  // Add toggle button for cooking modal
+  if (toggleCookingModalButton) {
+    toggleCookingModalButton.addEventListener('click', () => {
+      const cookingAnimation = document.querySelector('.cooking-animation');
+      if (cookingAnimation.style.display === 'none') {
+        cookingAnimation.style.display = 'block';
+        toggleCookingModalButton.textContent = '👁';
+      } else {
+        cookingAnimation.style.display = 'none';
+        toggleCookingModalButton.textContent = '🙈';
+      }
+    });
   }
 }
 

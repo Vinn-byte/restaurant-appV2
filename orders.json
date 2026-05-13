@@ -150,5 +150,59 @@
     "notes": "",
     "status": "Accepted",
     "createdAt": "2026-05-13T09:54:20.870Z"
+  },
+  {
+    "id": "ORD-1778669099735",
+    "table": 3,
+    "customer": "Table 3",
+    "items": [
+      {
+        "id": "mystic-salad",
+        "name": "Mystic Salad",
+        "quantity": 1,
+        "price": 12
+      },
+      {
+        "id": "moonlight-curry",
+        "name": "Moonlight Curry",
+        "quantity": 1,
+        "price": 16.5
+      }
+    ],
+    "total": 28.5,
+    "notes": "",
+    "status": "Preparing",
+    "createdAt": "2026-05-13T10:44:59.735Z",
+    "statusChangedAt": "2026-05-13T10:50:02.319Z"
+  },
+  {
+    "id": "ORD-1778669440000",
+    "table": 1,
+    "customer": "Table 1",
+    "items": [
+      {
+        "id": "moonlight-curry",
+        "name": "Moonlight Curry",
+        "quantity": 1,
+        "price": 16.5
+      },
+      {
+        "id": "mystic-salad",
+        "name": "Mystic Salad",
+        "quantity": 1,
+        "price": 12
+      },
+      {
+        "id": "sunset-burger",
+        "name": "Sunset Burger",
+        "quantity": 1,
+        "price": 15.9
+      }
+    ],
+    "total": 44.4,
+    "notes": "",
+    "status": "Completed",
+    "createdAt": "2026-05-13T10:50:40.000Z",
+    "statusChangedAt": "2026-05-13T10:51:02.735Z"
   }
 ]

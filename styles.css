@@ -257,6 +257,56 @@ img {
   margin-top: 0;
 }
 
+.external-scanner-section {
+  margin: 3rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 2rem;
+}
+
+.external-scanner-section .about-copy {
+  margin: 1rem 0 2rem;
+}
+
+.scanner-methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.method-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.method-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(244, 193, 82, 0.3);
+  transform: translateY(-2px);
+}
+
+.method-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.method-card h4 {
+  margin: 1rem 0 0.5rem;
+  color: var(--text);
+}
+
+.method-card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(220px, 1fr));

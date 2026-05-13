@@ -57,6 +57,21 @@ function checkAndCompleteOrders() {
 }
 
 app.use(express.json());
+
+// QR Code scan endpoint - handles external scanner app redirects
+app.get('/scan', (req, res) => {
+  const table = req.query.table;
+  
+  if (table && /^\d+$/.test(table)) {
+    console.log(`QR scan detected for table: ${table}`);
+    // Redirect to the scan.html landing page which handles the redirect
+    res.redirect(`/scan.html?table=${table}`);
+  } else {
+    console.log('Invalid QR scan - no valid table parameter');
+    res.redirect('/');
+  }
+});
+
 app.use(express.static(path.join(__dirname)));
 
 app.get('/api/orders', (req, res) => {

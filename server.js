@@ -4,9 +4,7 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Use /tmp directory for Vercel serverless functions, otherwise use current directory
-const ORDERS_FILE = process.env.VERCEL ? path.join('/tmp', 'orders.json') : path.join(__dirname, 'orders.json');
+const ORDERS_FILE = path.join(__dirname, 'orders.json');
 
 let orders = [];
 
@@ -60,18 +58,6 @@ function checkAndCompleteOrders() {
 
 app.use(express.json());
 
-// Enable CORS for all routes
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
-
 // QR Code scan endpoint - handles external scanner app redirects
 app.get('/scan', (req, res) => {
   const table = req.query.table;
@@ -87,11 +73,6 @@ app.get('/scan', (req, res) => {
 });
 
 app.use(express.static(path.join(__dirname)));
-
-// Serve index.html for root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
 
 app.get('/api/orders', (req, res) => {
   res.json(orders.slice().reverse());
@@ -186,12 +167,9 @@ app.delete('/api/orders', (req, res) => {
 
 loadOrdersFile();
 
-// For Vercel serverless functions, export the app instead of calling app.listen()
-module.exports = app;
+// Start automatic order completion check every minute
+setInterval(checkAndCompleteOrders, 60 * 1000);
 
-// For local development, still allow running with node server.js
-if (require.main === module) {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Chef server started on http://localhost:${PORT}`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`Chef server started on http://localhost:${PORT}`);
+});
